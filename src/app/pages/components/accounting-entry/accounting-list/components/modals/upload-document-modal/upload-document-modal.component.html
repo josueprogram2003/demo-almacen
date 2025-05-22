@@ -1,0 +1,116 @@
+<div class="modal-content border-0">
+  <div class="modal-header bg-adra p-3">
+    <h5 class="modal-title text-white" id="addCourseModalLabel">
+      {{ title }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      (click)="activeModal.close()"
+    ></button>
+  </div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-lg-6">
+        <div class="mb-3">
+          <label for="course-category-input" class="form-label"
+            >Año<span class="text-danger">*</span></label
+          >
+          <ng-select
+            sm
+            class="auto-grow"
+            [clearable]="false"
+            placeholder="Selecione un año"
+            [(ngModel)]="year"
+          >
+            <ng-option *ngFor="let year of years" [value]="year">
+              {{ year }}
+            </ng-option>
+          </ng-select>
+        </div>
+    </div>
+        <div class="col-lg-6">
+          <div class="mb-3">
+            <label class="form-label">Mes</label>
+            <ng-select
+              [notFoundText]="'No se encontraron datos'"
+              sm
+              [clearable]="false"
+              class="auto-grow"
+              placeholder="Selecione un mes"
+              [(ngModel)]="month"
+            >
+              <ng-option *ngFor="let month of months" [value]="month.id">
+                {{ month.name }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+
+  </div>
+    <div class="row">
+<div class="px-2">
+  <dropzone
+  class="dropzone"
+  [config]="dropzoneConfig"
+  (success)="onUploadSuccess($event)"
+  [message]="'Seleccione o arrastre los archivos'"
+  ></dropzone>
+</div>
+      @if (uploadedFiles.length > 0) {
+        <div class="p-2">
+            <label class="text-primary fw-bold">Archivos:</label>
+            <div class="gx-2">
+              <div class="mt-2 d-flex flex-nowrap overflow-auto">
+                <div
+                  class="border rounded d-flex flex-column justify-content-between p-2 me-2"
+                  *ngFor="let data of uploadedFiles; let i = index"
+                  style="width: 15rem; height: 5rem;"
+                >
+                  <div class="text-truncate" style="flex-grow: 1;">
+                    {{ data.name }}
+                  </div>
+                  <a
+                    href="javascript:void(0);"
+                    class="btn btn-sm btn-danger align-self-end"
+                    (click)="removeFile(i)"
+                  >
+                    <i class="bx bxs-trash"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+    <!--end row-->
+
+  <div class="modal-footer">
+    <div class="hstack gap-2 justify-content-end">
+      <button
+        type="button"
+        class="btn btn-ghost-danger"
+        (click)="activeModal.close()"
+      >
+        <i class="bi bi-x-lg align-baseline me-1"></i> Cerrar
+      </button>
+      @if(isLoading){
+      <button type="button" class="btn btn-success btn-load float-end">
+        <span class="d-flex align-items-center">
+          <span class="spinner-border flex-shrink-0" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </span>
+          <span class="flex-grow-1 ms-2"> Loading... </span>
+        </span>
+      </button>
+      }@else {
+      <button type="submit" class="btn btn-success" id="add-btn" (click)="onSave()">
+        Agregar
+      </button>
+      }
+    </div>
+  </div>
+</div>
+

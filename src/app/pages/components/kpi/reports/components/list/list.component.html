@@ -1,0 +1,4 @@
+<div style="height: 80vh !important">
+    <iframe *ngIf="url != undefined" width="100%" (load)="resizeIframe($event)" style="height: 100%;" [src]="url"
+        frameborder="0" allowFullScreen="true"></iframe>
+</div>

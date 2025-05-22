@@ -1,0 +1,115 @@
+@if(accountingEntry?.content.length! > 0){
+<div class="table-responsive table-card mt-1 mb-1">
+  <table class="table table-centered align-middle table-custom-effect mb-0">
+    <thead class="text-muted">
+      <tr>
+        <th scope="col">Lote</th>
+        <th scope="col">Fecha de Lote</th>
+        <th scope="col">Fecha de completo</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Proyecto</th>
+        <th scope="col">Obsevación</th>
+        <th scope="col">Sustento</th>
+        <th scope="col">Revision</th>
+        <th class="text-center" scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(item of accountingEntry.content; track $index) {
+        <tr>
+          <td >{{ item.seat }}</td>
+          <td >{{ item.batchDate | date: 'dd/MM/yyyy'}}</td>
+          <td > {{ item.comDate? (item.comDate | date: 'dd/MM/yyyy'): '-'}} </td>
+          <td >{{ item.username }}</td>
+          <td>
+            {{item.shortDescription}}
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="item.detail"
+              (focusout)="
+                onUpdatedAccountingEntry(
+                  item.id,
+                  item.shortDescription,
+                  item.detail
+                )
+              "
+            />
+          </td>
+          <td>
+            <ul class="d-flex gap-2 list-unstyled mb-0 justify-content-center">
+              @if (item.sustenance) {
+              <li>
+                <a
+                  (click)="onViewFile(item)"
+                  class="btn btn-subtle-secondary btn-icon btn-sm"
+                  data-edit-id="24301901"
+                  ><i class="bx bxs-file-pdf"></i
+                ></a>
+              </li>
+              <li  *ngIf="item.state == 3">
+                <a class="btn btn-subtle-info btn-icon btn-sm remove-item-btn"
+                  (click)="onModal(item.id, item.year, item.month)"
+                  ><i class="bx bxs-file-plus"></i
+                ></a>
+              </li>
+              }@else {
+              <li>
+                <a class="btn btn-subtle-info btn-icon btn-sm remove-item-btn"
+                (click)="onModal(item.id, item.year, item.month)"
+                  ><i class=" bx bxs-file-plus"></i
+                ></a>
+              </li>
+              }
+            </ul>
+          </td>
+          <td>
+            <ui-switch [disabled]="item?.sustenance == null" [checked]="item.review == 2" [checkedLabel]="'Si'" (change)="onChangeReview(item.id, $event)"
+            [uncheckedLabel]="'No'" size="small">
+          </ui-switch>
+          </td>
+          <td class="text-center">
+            @switch (item.state) { @case (1) {
+            <span class="badge bg-warning">Sin sustento</span>
+            } @case (2) {
+            <span class="badge bg-success">Por revisar</span>
+            } @case (3) {
+            <span class="badge bg-info">Observado</span>
+            } @case (4) {
+            <span class="badge bg-info">Revisado</span>
+            } }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<div class="row mt-3 align-items-center" id="pagination-element">
+  <div class="col-sm">
+    <div class="text-muted text-center text-sm-start">
+      Mostrando
+      <span class="fw-semibold">{{ (10 * (accountingEntry.page -1) + accountingEntry?.content.length)  }}</span> de
+      <span class="fw-semibold">{{ accountingEntry?.totalItems }}</span>
+      Resultados
+    </div>
+  </div>
+  <div class="col-sm-auto mt-3 mt-sm-0">
+    <pagination
+      class="pagination-wrap hstack gap-2 justify-content-center"
+      [totalItems]="accountingEntry?.totalItems!"
+      [itemsPerPage]="10"
+      [previousText]="'&lsaquo;'"
+      [rotate]="false"
+      [ngModel]="accountingEntry?.page!"
+      [maxSize]="5"
+      [nextText]="'&rsaquo;'"
+      (pageChanged)="pageChanged($event)"
+    ></pagination>
+  </div>
+</div>
+}@else{
+<no-result-message></no-result-message>
+}

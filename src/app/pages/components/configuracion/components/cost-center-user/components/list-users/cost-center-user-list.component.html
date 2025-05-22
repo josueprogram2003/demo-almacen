@@ -1,0 +1,67 @@
+<!-- end table responsive -->
+@if(costCenterUserData.totalItems > 0){
+  <div class="table-responsive table-card mt-1 mb-1">
+    <table
+      class="table table-centered align-middle table-custom-effect table-nowrap mb-0"
+    >
+      <thead class="text-muted">
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Usuario</th>
+          <th scope="col">Id del Usuario</th>
+          <th scope="col">Nombre Persona</th>
+          <th scope="col">Id de la persona</th>
+          <th class="text-center" scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(costCenterUser of costCenterUserData.content; track $index) {
+        <tr>
+          <td>{{ costCenterUser.name }}</td>
+          <td>{{ costCenterUser.user }}</td>
+          <td>{{ costCenterUser.userId }}</td>
+          <td>{{ costCenterUser.userName }}</td>
+          <td>{{ costCenterUser.idPerson }}</td>
+          <td>
+            <ul class="d-flex gap-2 list-unstyled mb-0 justify-content-center">
+              <li>
+                <a
+                  class="btn btn-subtle-info btn-icon btn-sm"
+                  data-edit-id="24301901"
+                  (click)="onView(costCenterUser)"
+                  ><i class=" ri-eye-line-thin"></i
+                ></a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <ng-container *ngIf="costCenterUserData?.content">
+    <div class="row align-items-center text-center text-sm-start mt-3" *ngIf="costCenterUserData?.content!.length > 0">
+      <div class="col-sm">
+          <div class="text-muted">
+              Mostrando
+              <span class="fw-semibold">{{ (10!) * (costCenterUserData.page-1) + costCenterUserData.content.length }}</span> de
+              <span class="fw-semibold">{{ costCenterUserData.totalItems }}</span>
+              Resultados
+          </div>
+      </div>
+      <div class="col-sm-auto mt-3 mt-sm-0">
+      </div>
+      <div class="col-sm-auto mt-3 mt-sm-0">
+          <pagination class="pagination-wrap hstack justify-content-center gap-2"
+              [totalItems]="costCenterUserData.totalItems" (pageChanged)="pageChanged($event)"
+            [maxSize]="5" [previousText]="'&lsaquo;'" [rotate]="false"
+              [itemsPerPage]="10" [nextText]="'&rsaquo;'">
+          </pagination>
+      </div>
+  </div>
+  </ng-container>
+  }@else{
+  <no-result-message></no-result-message>
+  }
+

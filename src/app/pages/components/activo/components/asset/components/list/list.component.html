@@ -1,0 +1,253 @@
+<div class="card" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+    <div class="card-body pt-0">
+        <div class="">
+            <p-table [value]="this.assets" dataKey="id"
+                class="table  table-bordeless align-middle-table-nowrap m-0 tb-adra tb-adra-t">
+                <ng-template pTemplate="header">
+                    <tr style="font-size: 12px;">
+                        <th class="border-top-0" style="width: 2px;">#</th>
+                        <th class="border-top-0" style="width: 5px;">Código</th>
+                        <th class="border-top-0" style="width: 5px;">Serie</th>
+                        <th class="border-top-0" style="width: 10px;">Descripción</th>
+                        <th class="border-top-0" style="width: 10px;">Fecha de activación</th>
+                        <th class="border-top-0" style="width: 10px;">Fecha fin de seguro</th>
+                        <th class="border-top-0" style="width: 10px;">Fecha fin de garantía</th>
+                        <th class="border-top-0" style="width: 5px;">Saldo a depreciarse</th>
+                        <th class="border-top-0" style="width: 10px;">Saldo inicial</th>
+                        <th class="border-top-0" style="width: 5px;">Centro de costo</th>
+                        <th class="border-top-0" style="width: 10px;">Asignado a</th>
+                        <th class="border-top-0" style="width: 10px;">Sede</th>
+                        <th class="border-top-0" style="width: 10px;">Área</th>
+                        <th class="border-top-0" style="width: 5px;">Estado</th>
+                        <th class="border-top-0" style="width: 5px;">Porcentaje depreciación</th>
+                        <th class="border-top-0 text-center" style="width: 3px;">Acciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <button type="button" pButton pRipple [pRowToggler]="item"
+                                class="btn btn-sm btn-icon btn-ghost-secondary"
+                                [icon]="expanded ? 'bi bi-caret-right-fill' : 'bi bi-caret-down-fill'"></button>
+                        </td>
+                        <td>
+                            {{item?.code}}
+                        </td>
+                        <td>{{item.serialNumber}}</td>
+                        <td>{{item.description}}</td>
+                        <td>{{item?.activationDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{item?.insuranceEndDate | date: 'MMMM - y' }}</td>
+                        <td>{{item?.warrantyEndDate | date: 'MMMM - y'}}</td>
+                        <td>S/. {{item.valueRemainingAsset | number:'1.0':'en-US'}}</td>
+                        <td>S/. {{item.assetValue | number:'1.0':'en-US'}}</td>
+                        <td class="text-center">
+                            <label for="" [ngbTooltip]="item.costCenterName">
+                                {{item?.costCenterCode}}
+                            </label>
+                        </td>
+                        <td>{{item?.employeeName}}</td>
+                        <td>{{item?.officeName}}</td>
+                        <td>{{item?.areaName}}</td>
+                        <td>
+                            @if(item.isActive){
+                            @switch (getDepreciateStatus(item.state)) {
+                            @case ('1') {
+                            <span class="badge badge-pill bg-adra">
+                                Activo
+                            </span>
+                            }
+                            @case ('2') {
+                            <span class="badge badge-pill bg-warning">
+                                Depreciado
+                            </span>
+                            }
+                            @case ('3') {
+                            <span class="badge badge-pill bg-danger">
+                                De baja
+                            </span>
+                            }
+                            @case ('4') {
+                            <span class="badge badge-pill bg-danger">
+                                Vendido
+                            </span>
+                            }
+                            @default {
+                            <span class="badge badge-pill bg-danger">
+                                Inactivo
+                            </span>
+                            }
+                            }
+                            }@else{
+                            <span class="badge badge-pill bg-danger">
+                                Inactivo
+                            </span>
+                            }
+                        </td>
+                        <td class="text-center"> {{item.depreciationPercentage * 100}}%</td>
+                        <td class="tb-adra-td">
+                            <div class="center">
+                                <div dropdown class="flex-shrink-0 dropdown" data-boundary="viewport">
+                                    <a dropdownToggle href="javascript:void(0);"
+                                        class="text-reset d-inline-block me-2 ms-2 text-center">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+
+                                    <ul *bsDropdownMenu class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);" (click)="edit(item)"><i
+                                                    class="bx bx-pencil m-0"></i>
+                                                Editar</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item delete-item" href="javascript:void(0);"
+                                                (click)="remove(item)"><i class="bx bx-trash m-0"></i>
+                                                Eliminar</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"
+                                                (click)="viewDetails(item)"><i class="bi bi-eye-fill m-0"></i>
+                                                Detalle</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"
+                                                (click)="modelCode(item)">
+                                                <i class="bi bi-qr-code m-0"></i>Generador de código
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"
+                                                (click)="changeAdd(item)"><i class=" bx bx-copy-alt m-0"></i>
+                                                Adicionales</a>
+                                        </li>
+                                        <li>
+                                          <a class="dropdown-item" href="javascript:void(0);"
+                                              (click)="getHistory(item)"><i class=" bx bx-copy-alt m-0"></i>
+                                              Historial del Activo</a>
+                                      </li>
+                                        @if(item.employeeId == null && (item.state == 1 || item.state == 2)){
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);"
+                                                (click)="changeAssignment(item)"><i class="bi bi-check-circle m-0"></i>
+                                                Asignar</a>
+                                        </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <br>
+                            </div>
+                            <!-- <div class="d-flex gap-3 justify-content-center">
+                                <ul class="d-flex gap-2 list-unstyled mb-0">
+                                    <li>
+                                        <a class="btn btn-subtle-warning btn-icon btn-sm" href="javascript:void(0);"
+                                            (click)="edit(item)" ngbTooltip="Editar"><i class="bx bx-pencil m-0"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-subtle-danger btn-icon btn-sm delete-item"
+                                            href="javascript:void(0);" (click)="remove(item)" ngbTooltip="Eliminar"><i
+                                                class="bx bx-trash m-0"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-subtle-info btn-icon btn-sm" href="javascript:void(0);"
+                                            (click)="viewDetails(item)" ngbTooltip="Detalle"><i
+                                                class="bi bi-eye-fill m-0"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-subtle-primary btn-icon btn-sm" href="javascript:void(0);"
+                                            (click)="modelCode(item)" ngbTooltip="Generar de código">
+                                            <i class="bi bi-qr-code m-0"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-subtle-secondary btn-icon btn-sm" href="javascript:void(0);"
+                                            (click)="changeAdd(item)" ngbTooltip="Adicionales"><i
+                                                class=" bx bx-copy-alt m-0"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div> -->
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-item>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <p class="fs-6 m-0 me-2">
+                                <b>Adicionales</b>
+                            </p>
+                        </td>
+                        <td colspan="9">
+                            @for (d of item.additionals; track $index) {
+                            <div class="row">
+                                <div class="col-sm-2">
+
+                                    <div class="mb-1">
+                                        <label for=""><b>Fecha:</b> {{d.date| date: 'dd/MM/yyyy' }}</label>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for=""><b>Monto:</b> S/. {{d.amount | number:'1.0':'en-US'}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="mb-1">
+                                        <label for=""><b>Descripción:</b> {{d.description}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p><b>Archivos:</b></p>
+                                        </div>
+                                        @for (r of d.files; track $index) {
+                                        <div class="col-sm-3">
+                                            <img class="img-fluid rounded d-block me-1" [src]="r.icon"
+                                                [ngbTooltip]="r.name" alt="Dropzone-Image"
+                                                style="height: 35px; cursor: pointer;" (click)="open(r)" />
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @if(item.additionals.length-1>$index){
+                            <hr style="width: 100%;" class="m-0 mt-2 mb-2">
+                            }
+                            }
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </div>
+        <ng-container *ngIf="pagination.data.content">
+            <!-- <app-ngx-pagination-quarkus [pagination]="pagination.data" [currentPage]="this.page_number"
+                (pageChange)="pageChanged($event)"></app-ngx-pagination-quarkus> -->
+            <!-- <div class="row align-items-center text-center text-sm-start mt-3">
+                <div class="col-sm">
+                    <div class="text-muted">
+                        Mostrando
+                        <span class="fw-semibold">{{ pagination.data.pageSize }}</span> de
+                        <span class="fw-semibold">{{ pagination.data.pageSize }}</span>
+                        Resultados
+                    </div>
+                </div>
+                <div class="col-sm-auto mt-3 mt-sm-0">
+                </div>
+                <div class="col-sm-auto mt-3 mt-sm-0">
+                    <pagination class="pagination-wrap hstack justify-content-center gap-2"
+                        [totalItems]="pagination.data.totalItems" (pageChanged)="pageChanged($event)"
+                        [(ngModel)]="currentPage" [maxSize]="maxSize" [previousText]="'&lsaquo;'" [rotate]="false"
+                        [itemsPerPage]="this.page_size" [nextText]="'&rsaquo;'">
+                    </pagination>
+                </div>
+            </div> -->
+        </ng-container>
+
+        @if (isLoadingList) {
+        <!-- Spinner personalizado -->
+        <ngx-spinner bdOpacity="0.1" bdColor="#fff" size="medium" color="skyblue" type="ball-spin-clockwise"
+            [fullScreen]="false"></ngx-spinner>
+        }
+    </div>

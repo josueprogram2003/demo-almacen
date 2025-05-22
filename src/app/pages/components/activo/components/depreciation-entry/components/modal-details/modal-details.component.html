@@ -1,0 +1,75 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex justify-content-end">
+            <div>
+                <button type="button" class="btn btn-sm btn-danger" (click)="exportPdf()"  [ngbTooltip]="'Reporte por activos'">
+                    <i class="bx bxs-file-pdf align-middle me-1"></i>Reporte
+                </button>
+                <button type="button" class="btn btn-sm btn-danger ms-1" (click)="exportPdfAccountContable()" [ngbTooltip]="'Reporte por cuenta contable'">
+                    <i class="bx bxs-file-pdf align-middle me-1"></i>Reporte CC
+                </button>
+            </div>
+        </div>
+        <br>
+        <div class="">
+            <table class="table table-bordered tb-adra" style="font-size: 12px;">
+                <thead class="text-primary">
+                    <tr>
+                        <th style="width: 2%;">#</th>
+                        <th style="width: 25%;">Nombre</th>
+                        <th style="width: 15%;">Cuenta</th>
+                        <th style="width: 10%;">Debe</th>
+                        <th style="width: 10%;">Haber</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of array.asObservable()| async; track $index) {
+                    <tr>
+                        <td>
+                            {{$index +1}}
+                        </td>
+                        <td>{{item?.asset?.description}}</td>
+                        <td>{{item?.account?.accountNumber}}</td>
+                        <td>
+                            @if(item.transactionType == 'D'){
+                            S/. {{item.amount}}
+                            }
+                        </td>
+                        <td>
+                            @if(item.transactionType=="H") {
+                            S/. {{item.amount}}
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row align-items-center text-center text-sm-start mt-3">
+                <div class="col-sm">
+                    <div class="text-muted">
+                        Mostrando
+                        <span class="fw-semibold">{{ this.pageSize }}</span> of
+                        <span class="fw-semibold">{{ this.pageSize }}</span>
+                        Resultados
+                    </div>
+                </div>
+                <div class="col-sm-auto mt-3 mt-sm-0">
+                    <pagination [totalItems]="(total.asObservable()| async)!" [(ngModel)]="page" [maxSize]="maxSize"
+                        [previousText]="'&lsaquo;'" [rotate]="false" [nextText]="'&rsaquo;'" [itemsPerPage]="pageSize"
+                        (pageChanged)="pageChanged($event)"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-end">
+
+        <button type="button" class="btn btn-sm btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+    </div>
+</div>

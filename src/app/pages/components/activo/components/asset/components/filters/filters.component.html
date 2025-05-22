@@ -1,0 +1,161 @@
+<app-breadcrumbs title="Inicio" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<div class="card card-border m-0" style="border-end-end-radius: 0px; border-end-start-radius: 0px;">
+    <div class="card-body">
+        <form [formGroup]="formGroup">
+            <div class="row">
+                <div class="col-sm-12 pt-2 d-flex justify-content-between">
+                    <div class="col-sm-1">
+                        <ng-select sm class="auto-grow-pagination ng-select-sm" formControlName="size"
+                            (change)="search()" [clearable]="false" notFoundText="Sin datos" [searchable]="false">
+                            <ng-option [value]="5">5</ng-option>
+                            <ng-option [value]="10">10</ng-option>
+                            <ng-option [value]="20">20</ng-option>
+                            <ng-option [value]="50">50</ng-option>
+                            <ng-option [value]="100">100</ng-option>
+                        </ng-select>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-info btn-sm me-1" (click)="openEnd()">
+                            <i class="bi bi-funnel align-baseline"></i> Filtros
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary me-1" (click)="generateQR()">
+                            <i class="bi bi-qr-code m-0"></i>
+                            Generar QR
+                        </button>
+                        <button type="button" class="btn btn-sm btn-info me-1" (click)="sync()">
+                            <i class="bx bx-sync"></i>
+                            Sincronizar
+                        </button>
+                        <button type="button" class="btn btn-sm btn-adra me-1" (click)="add()">
+                            <i class="bi bi-plus-circle align-baseline"></i>
+                            Agregar
+                        </button>
+                        <button type="button" class="btn btn-sm btn-success me-1" (click)="export()">
+                            <i class="bi bi-file-excel"></i>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="custom-offcanvas" id="filters">
+    <div class="offcanvas-header border-bottom p-3">
+        <p class="offcanvas-title" id="filtersLabel" class="fs-5 m-0">Filtros de activo</p>
+        <button type="button" class="btn-close" (click)="closeoffcanvas()"></button>
+    </div>
+    <div class="offcanvas-body profile-offcanvas">
+        <div [formGroup]="formGroup">
+            <div class="row">
+                <div class="col-sm-12 mb-2">
+                    <label for="">Año de activación:</label>
+                    <ng-select sm formControlName="year" class="ng-select-sm" placeholder="Seleccionar año"
+                        [clearable]="false" notFoundText="Sin datos" [searchable]="false">
+                        <ng-option [value]="''">Todos</ng-option>
+                        @for (item of yearsData; track $index) {
+                        <ng-option [value]="item.year">{{item.year}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Mes :</label>
+                    <ng-select sm formControlName="month" class="ng-select-sm" bindValue="month" bindLabel="month"
+                        [clearable]="false" [searchable]="false">
+                        <ng-option [value]="''">Todos</ng-option>
+                        <ng-option *ngFor="let item of mes" [value]="item.month">{{item.name}}</ng-option>
+                    </ng-select>
+                </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Estados:</label>
+                    <ng-select sm formControlName="state" class="ng-select-sm" [clearable]="false"
+                        notFoundText="Sin datos" placeholder="Seleccionar el estado">
+                        <ng-option [value]="''">Todos</ng-option>
+                        @for (item of depreciateStatus; track $index) {
+                        <ng-option [value]="item.id">{{item.name}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Grupos:</label>
+                    <ng-select sm formControlName="assetGroupId" class="ng-select-sm" [clearable]="false"
+                        notFoundText="Sin datos" placeholder="Seleccionar grupo">
+                        <ng-option [value]="''">Todos</ng-option>
+                        @for (item of groups; track $index) {
+                        <ng-option [value]="item.id">{{item.name}}</ng-option>
+                        }
+                    </ng-select>
+                </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Unidad de negocio:</label>
+                    <ng-select sm formControlName="businessUnitId" class="ng-select-sm" [clearable]="false"
+                        notFoundText="Sin datos" placeholder="Seleccionar unidad de negocio"
+                        (change)="getCostCenter($event); getAreas($event)">
+                        <ng-option [value]="''">Todos</ng-option>
+                        <ng-option *ngFor="let d of businessUnits" [value]="d.id">
+                            {{ d.name }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+                <div class="col-sm-12 mb-2">
+                  <label for="">Área:</label>
+                  <ng-select sm formControlName="areaId" class="ng-select-sm" [clearable]="false"
+                      notFoundText="Sin datos" placeholder="Seleccionar una área"
+                     >
+                      <ng-option [value]="''">Todos</ng-option>
+                      <ng-option *ngFor="let d of areas" [value]="d.id">
+                          {{ d.name }}
+                      </ng-option>
+                  </ng-select>
+              </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Centro de costo:</label>
+                    <ng-select sm formControlName="costCenterId" class="ng-select-sm" [clearable]="false"
+                        notFoundText="Sin datos" placeholder="Seleccionar centro de costo">
+                        <ng-option [value]="''">Todos</ng-option>
+                        <ng-option value="0" *ngFor="let item of costCenters" [value]="item.id">{{item.code}} -
+                            {{item.name}}</ng-option>
+                    </ng-select>
+                </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Serie: </label>
+                    <input type="text" formControlName="series" class="form-control form-control-sm"
+                        placeholder="Escribir activo por serie" [typeahead]="suggestionsSerialNumber$" [typeaheadAsync]="true" [typeaheadScrollable]="true" [typeaheadOptionsInScrollableView]="10"
+                        (keydown.enter)="search()"
+                        >
+                </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Descripción: </label>
+                    <input type="text" formControlName="value" class="form-control form-control-sm"
+                        placeholder="Escribir activo por descripción" [typeahead]="suggestionsDescription$"
+                        [typeaheadAsync]="true" [typeaheadScrollable]="true" [typeaheadOptionsInScrollableView]="10">
+                </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Código:</label>
+                    <input type="text" formControlName="code" class="form-control form-control-sm"
+                        placeholder="Escribir código" (typeaheadOnSelect)="onChangeCode($event)"
+                        (keyup)="changeWriteCode($event)" [typeahead]="suggestionsCode$" [typeaheadAsync]="true"
+                        [typeaheadScrollable]="true" [typeaheadOptionsInScrollableView]="10"
+                        (keydown.enter)="search()"
+                        >
+                </div>
+                <div class="col-sm-12 mb-2">
+                    <label for="">Asignado a:</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="Escribir el usuario"
+                        (typeaheadOnSelect)="onChange($event)" (keyup)="changeWrite($event)" formControlName="search"
+                        [typeahead]="suggestions$" [typeaheadAsync]="true" typeaheadOptionField="fullName"
+                        [typeaheadScrollable]="true" [typeaheadOptionsInScrollableView]="10">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="offcanvas-header htsack gap-2 border-top p-3">
+        <button class="btn btn-subtle-danger w-100" (click)="clear()">
+            <i class="bi bi-x-lg align-baseline me-1"></i> Limpiar
+        </button>
+        <button class="btn btn-secondary w-100" (click)="search()" [disabled]="this.formGroup.invalid">
+            <i class="bi bi-funnel align-baseline me-1"></i> Filtros
+        </button>
+    </div>
+</div>
+<div class="offcanvas-backdrop fade backdrop1" id="backdrop" (click)="closeoffcanvas()"></div>

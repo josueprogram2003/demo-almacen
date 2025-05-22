@@ -1,0 +1,125 @@
+<div class="modal-content border-0">
+  <div class="modal-header bg-adra p-3">
+    <h5 class="modal-title text-white" id="addCourseModalLabel">
+      {{ title }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      (click)="activeModal.close()"
+    ></button>
+  </div>
+
+  <form class="tablelist-form" autocomplete="off" [formGroup]="formGroup">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="course-title-input" class="form-label"
+          >Unidad de Negocío<span class="text-danger">*</span></label
+        >
+        <adra-form-group [control]="formGroup.get('businessUnitId')!">
+          <ng-select
+            [notFoundText]="'No se encontraron datos'"
+            sm
+            [clearable]="true"
+            class="auto-grow"
+            placeholder="Unidad de negocio"
+            formControlName="businessUnitId"
+            (change)="getCostCenterByBusinessUnit($event)"
+          >
+            <ng-option
+              *ngFor="let businessUnit of businessUnits"
+              [value]="businessUnit.id"
+            >
+              {{ businessUnit.name }}
+            </ng-option>
+          </ng-select>
+        </adra-form-group>
+      </div>
+      <div class="mb-3">
+        <label for="course-title-input" class="form-label"
+          >Centro de Costo<span class="text-danger">*</span></label
+        >
+        <adra-form-group [control]="formGroup.get('costCenterId')!">
+          <ng-select
+            [notFoundText]="'No se encontraron datos'"
+            sm
+            [clearable]="true"
+            class="auto-grow"
+            formControlName="costCenterId"
+            placeholder="Centro de Costo"
+          >
+            <ng-option
+              *ngFor="let costCenter of costCenters"
+              [value]="costCenter.id"
+              >{{ costCenter.code }} {{ costCenter.name }}</ng-option
+            >
+          </ng-select>
+        </adra-form-group>
+      </div>
+      <div class="mb-3">
+        <label for="course-title-input" class="form-label"
+          >Numero de Cuenta<span class="text-danger">*</span></label
+        >
+        <adra-form-group [control]="formGroup.get('count')!">
+          <input
+            type="number"
+            id="course-title-input"
+            class="form-control"
+            formControlName="count"
+            placeholder="Escribe el numer de la cuenta"
+            required
+          />
+        </adra-form-group>
+      </div>
+
+      <div class="mb-3">
+        <label for="course-category-input" class="form-label"
+          >Descripción<span class="text-danger">*</span></label
+        >
+        <adra-form-group [control]="formGroup.get('description')!">
+          <input
+            type="text"
+            id="course-title-input"
+            class="form-control"
+            formControlName="description"
+            placeholder="Escribe la descripción de la cuenta"
+            required
+          />
+        </adra-form-group>
+      </div>
+
+      <!--end row-->
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button
+          type="button"
+          class="btn btn-ghost-danger"
+          (click)="activeModal.close()"
+        >
+          <i class="bi bi-x-lg align-baseline me-1"></i> Cerrar
+        </button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load float-end">
+          <span class="d-flex align-items-center">
+            <span class="spinner-border flex-shrink-0" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+            <span class="flex-grow-1 ms-2"> Loading... </span>
+          </span>
+        </button>
+        }@else {
+        <button
+          type="submit"
+          class="btn btn-success"
+          id="add-btn"
+          (click)="onSave()"
+          [disabled]="formGroup.invalid"
+        >
+          {{ countAccountExoneratedId ? 'Editar' : 'Agregar' }}
+        </button>
+        }
+      </div>
+    </div>
+  </form>
+</div>

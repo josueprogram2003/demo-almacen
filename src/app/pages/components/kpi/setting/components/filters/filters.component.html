@@ -1,0 +1,25 @@
+<app-breadcrumbs title="Indicadores" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<div class="card card-border ms-1 me-1">
+    <div class="card-body">
+        <div class="row gx-2" [formGroup]="formGroup">
+            <div class="col-md-2 col-sm-3">
+                <label for="">Unidad de negocio:</label>
+                <ng-select sm class="ng-select-sm" placeholder="Seleccinar la unidad de negocio" [clearable]="false"
+                    notFoundText="Sin datos" formControlName="businessUnitId">
+                    <ng-option [value]="''">Todos</ng-option>
+                    <ng-option value={{b.id}} *ngFor="let b of businesstUnit">{{b.name}}</ng-option>
+                </ng-select>
+            </div>
+            <div class="col-md-2 col-sm-3">
+                <label for="">Nombre:</label>
+                <input type="text" class="form-control form-control-sm" placeholder="Escribir el nombre"
+                    formControlName="value">
+            </div>
+            <div class="col-md-8 col-sm-6 d-flex">
+                <button class="btn btn-sm btn-primary" type="button" style="margin-top: auto;" (click)="search()" >
+                    <i class="ri-search-line search-icon m-0"></i> Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

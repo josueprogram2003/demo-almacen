@@ -1,0 +1,182 @@
+<div class="card" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+    <div class="card-body pt-0">
+        <tabset class="nav nav-pills nav-adra mb-3" role="tablist">
+          <div class="row mt-2">
+           <div class="col-3">
+            <input type="text" class="form-control" placeholder="Buscar por código"
+            [(ngModel)]="code" (ngModelChange)="onSearch()"/>
+           </div>
+           <div class="col-3">
+            <input type="text" class="form-control" placeholder="Buscar por descripción"  [(ngModel)]="description"
+            (ngModelChange)="onSearch()"/>
+           </div>
+          </div>
+            <tab heading="Asignados" class="nav-item" (selectTab)="select(1)">
+                <div class="tab-pane mt-3 active" id="home-1" role="tabpanel">
+                    <div>
+                        <table class="table table-bordeless table-centered align-middle-table-nowrap m-0 tb-adra">
+                            <thead>
+                                <tr>
+                                    <th style="width: 1%;">#</th>
+                                    <th style="width: 10%;">Código de activo</th>
+                                    <th style="width: 10%;">Responsable</th>
+                                    <th style="width: 10%;">Activo</th>
+                                    <th style="width: 10%;">Número de serie</th>
+                                    <th style="width: 10%;">Razones</th>
+                                    <th style="width: 10%;">Fecha de asignación</th>
+                                    <th style="width: 5%;">Estado</th>
+                                    <th style="width: 10%;">Centro de costo</th>
+                                    <th style="width: 10%;">Cuenta contable</th>
+                                    <th style="width: 10%;">Archivos</th>
+                                    <th class="border-top-0 text-center" style="width: 4%;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (item of this._details$.asObservable()| async; track
+                                $index) {
+                                <tr>
+                                    <td>{{$index+1}}</td>
+                                    <td>{{item?.asset?.code}}</td>
+                                    <td>{{item.employeeName}}</td>
+                                    <td>{{item.description}}</td>
+                                    <td>{{item?.asset?.serialNumber}}</td>
+                                    <td>{{item.reason}}</td>
+                                    <td>{{item.assignmentDate | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{item.state != 1 ? 'Devuelto' : 'Asignado'}}</td>
+                                    <td>{{item.costCenterName}}</td>
+                                    <td>
+                                        {{item?.asset?.assetGroup?.account?.accountNumber}}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            @for (r of item.files; track $index) {
+                                            <img class="img-fluid rounded d-block me-1" [src]="r.icon"
+                                                [ngbTooltip]="r.name" alt="Dropzone-Image"
+                                                style="height: 35px; cursor: pointer;" (click)="open(r)" />
+                                            }
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group" aria-label="Acciones">
+                                            <button type="button" class="btn btn-danger btn-round btn-icon btn-neutral"
+                                                container="body" ngbTooltip="Devolver activo"
+                                                (click)="removeAssignation(item)">
+                                                <i class=" bx bx-copy-alt m-0"></i>
+                                            </button>
+
+                                            <button type="button" class="btn btn-info btn-round btn-icon btn-neutral"
+                                                container="body" ngbTooltip="Recepcionar"
+                                                (click)="changeIsApproved(item)">
+                                                <i class="ri-checkbox-circle-fill m-0"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-between align-items-center text-center text-sm-start mt-3">
+                            <div class="col-sm">
+                                <div class="text-muted">
+                                    Mostrando
+                                    <span class="fw-semibold">{{ this.pageSize }}</span> de
+                                    <span class="fw-semibold">{{ this.pageSize }}</span>
+                                    Resultados
+                                </div>
+                            </div>
+                            <div class="col-sm-auto mt-3 mt-sm-0">
+                                <pagination [totalItems]="(_total$.asObservable() | async)!" [(ngModel)]="page"
+                                    [maxSize]="maxSize" [previousText]="'&lsaquo;'" [rotate]="false"
+                                    [nextText]="'&rsaquo;'" [itemsPerPage]="pageSize"
+                                    (pageChanged)="pageChanged($event)">
+                                </pagination>
+                            </div>
+                        </div>
+                    </div>
+                    <ngx-spinner bdOpacity="0.1" bdColor="#fff" size="medium" color="skyblue" type="ball-spin-clockwise"
+                    [fullScreen]="false"></ngx-spinner>
+                </div>
+            </tab>
+            <tab heading="Devueltos" class="nav-item" (selectTab)="select(2)">
+                <div class="tab-pane mt-3 active" id="home-1" role="tabpanel">
+                    <table class="table table-bordeless table-centered align-middle-table-nowrap m-0 tb-adra">
+                        <thead>
+                            <tr>
+                                <th style="width: 1%;">#</th>
+                                <th style="width: 10%;">Código de activo</th>
+                                <th style="width: 10%;">Responsable</th>
+                                <th style="width: 10%;">Activo</th>
+                                <th style="width: 10%;">Número de serie</th>
+                                <th style="width: 10%;">Razones</th>
+                                <th style="width: 10%;">Fecha de retorno</th>
+                                <th style="width: 5%;">Estado</th>
+                                <th style="width: 10%;">Centro de costo</th>
+                                <th style="width: 10%;">Cuenta contable</th>
+                                <th style="width: 10%;">Archivos</th>
+                                <th class="border-top-0 text-center" style="width: 4%;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of this._details$.asObservable()| async; track
+                            $index) {
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{item?.asset?.code}}</td>
+                                <td>{{item.employeeName}}</td>
+                                <td>{{item.description}}</td>
+                                <td>{{item?.asset?.serialNumber}}</td>
+                                <td>{{item.reason}}</td>
+                                <td>{{item.returnDate | date: 'dd/MM/yyyy' }}</td>
+                                <td>{{item.state != 1 ? 'Devuelto' : 'Asignado'}}</td>
+                                <td>{{item.costCenterName}}</td>
+                                <td>
+                                    {{item?.asset?.assetGroup?.account?.accountNumber+' '+
+                                    item?.asset?.assetGroup?.account?.description}}
+                                </td>
+                                <td>
+                                    @for (r of item.files; track $index) {
+                                    <img class="img-fluid rounded d-block me-1" [src]="r.icon" [ngbTooltip]="r.name"
+                                        alt="Dropzone-Image" style="height: 35px; cursor: pointer;" (click)="open(r)" />
+                                    }
+                                </td>
+                                <td>
+                                     <div class="btn-group" role="group" aria-label="Acciones">
+                                         <button type="button" class="btn btn-info btn-round btn-icon btn-neutral"
+                                             container="body" ngbTooltip="Devolver" (click)="changeIsReturn(item)">
+                                             <i class="ri-checkbox-circle-fill m-0"></i>
+                                         </button>
+                                         <button class="btn btn-adra btn-round btn-icon btn-neutral" type="button"  ngbTooltip="Asignar"
+                                              (click)="changeAssignmentV2(item)"><i
+                                                 class="bi bi-check-circle m-0"></i>
+                                         </button>
+                                     </div>
+                                </td>
+                            </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-between align-items-center text-center text-sm-start mt-3">
+                        <div class="col-sm">
+                            <div class="text-muted">
+                                Mostrando
+                                <span class="fw-semibold">{{ this.pageSize }}</span> de
+                                <span class="fw-semibold">{{ this.pageSize }}</span>
+                                Resultados
+                            </div>
+                        </div>
+                        <div class="col-sm-auto mt-3 mt-sm-0">
+                            <pagination [totalItems]="(_total$.asObservable() | async)!" [(ngModel)]="page"
+                                [maxSize]="maxSize" [previousText]="'&lsaquo;'" [rotate]="false" [nextText]="'&rsaquo;'"
+                                [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)">
+                            </pagination>
+                        </div>
+                    </div>
+                    <ngx-spinner bdOpacity="0.1" bdColor="#fff" size="medium" color="skyblue" type="ball-spin-clockwise"
+                    [fullScreen]="false"></ngx-spinner>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+
+</div>

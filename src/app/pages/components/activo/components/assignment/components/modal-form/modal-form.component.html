@@ -1,0 +1,153 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row" [formGroup]="formGroup">
+            <div class="col-sm-6 d-flex">
+                <p class="fs-5" style="margin-top: auto; margin-bottom: auto;">Usuario:
+                    <strong>{{employeed.fullName}}</strong>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-7 mb-2">
+                        <!-- <label for="">Unidad de negocio:</label> -->
+                        <adra-form-group [label]="'Unidad de negocio:'" [control]="formGroup.get('businessUnit')!">
+                            <ng-select sm formControlName="businessUnit" class="ng-select-sm" [clearable]="false"
+                                notFoundText="Sin datos" (change)="changeBusinnesUnit($event)">
+                                <ng-option *ngFor="let d of businessUnits" [value]="d.id">
+                                    {{ d.name }}
+                                </ng-option>
+                            </ng-select>
+                        </adra-form-group>
+                    </div>
+                    <div class="col-sm-5 mb-2">
+                        <!-- <label>{{this.date_string}}:</label> -->
+                        <adra-form-group [control]="formGroup.get('date')!" [label]="this.date_string">
+                            <input type="text" class="form-control form-control-sm" mwlFlatpickr
+                                placeholder="dd/mm/yyyy" formControlName="date" [dateFormat]="'d/m/Y'"
+                                [convertModelValue]="true" [disableMobile]="true" />
+                        </adra-form-group>
+                    </div>
+                    <div class="col-sm-7 mb-2">
+                        <!-- <label for="">Centro de costo:</label> -->
+                        <adra-form-group [label]="'Centro de costo:'" [control]="formGroup.get('costCenterId')!">
+                            <ng-select sm [clearable]="false" class="ng-select-sm" notFoundText="Sin datos"
+                                formControlName="costCenterId">
+                                <ng-option value="0" *ngFor="let item of costCenters"
+                                    [value]="item.id">{{item.name}}</ng-option>
+                            </ng-select>
+                        </adra-form-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-stepper #cdkStepper [linear]="false"
+            class="cdksteppercontent nav nav-pills progress-bar-tab custom-nav m-0 p-0" [formGroup]="formGroup">
+            <cdk-step [optional]="false">
+                <ng-template cdkStepLabel>
+                    <div class="step-title"></div>
+                </ng-template>
+                <div class="m-0 p-0">
+                    @if (employeed.fullName!=undefined) {
+                    <dual-list [sort]="keepSorted" [source]="source" [key]="key" [display]="display" [filter]="filter"
+                        [(destination)]="confirmed" height="260px" [format]="format" [disabled]="disabled"></dual-list>
+                    }
+                </div>
+            </cdk-step>
+            <cdk-step [optional]="true">
+                <ng-template cdkStepLabel>
+                    <div class="step-title"></div>
+                </ng-template>
+                <div #stepTwo>
+                    <label for="" class="h5">Observaciones</label>
+                    <div ngbAccordion formArrayName="observations">
+                        @for (i of observations.controls; track $index) {
+                        <div ngbAccordionItem [collapsed]="true">
+                            <h2 ngbAccordionHeader>
+                                <button ngbAccordionButton>{{i.get('name')?.value}}</button>
+                            </h2>
+                            <div ngbAccordionCollapse>
+                                <div ngbAccordionBody [formGroupName]="$index" class="ps-0 pe-0">
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-5">
+                                            <div class="mb-2">
+                                                <!-- <label for="">Razones:</label> -->
+                                                <adra-form-group [label]="'Razones:'" [control]="i.get('reason')!">
+                                                    <textarea type="text" class="form-control form-control-sm"
+                                                        formControlName="reason" aria-label="Small"
+                                                        aria-describedby="inputGroup-sizing-sm">
+                                                    </textarea>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="mb-2">
+                                                <!-- <label for="">Condición:</label> -->
+                                                <adra-form-group [label]="'Condición:'" [control]="i.get('condition')!">
+                                                    <ng-select [clearable]="false" sm class="ng-select-sm"
+                                                        notFoundText="Sin datos" formControlName="condition"
+                                                        placeholder="Seleccionar la condición"
+                                                          
+                                                        >
+                                                        @for (e of assignmentConditions; track $index) {
+                                                        <ng-option [value]="e?.id"  [disabled]="!e?.id">
+                                                            {{e?.name}}
+                                                        </ng-option>
+                                                        }
+                                                    </ng-select>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="mb-2">
+                                                <!-- <label for="">Descripción:</label> -->
+                                                <adra-form-group [label]="'Descripción:'" [control]="i.get('notes')!">
+                                                    <textarea type="text" class="form-control form-control-sm"
+                                                        formControlName="notes" aria-label="Small"
+                                                        aria-describedby="inputGroup-sizing-sm"></textarea>
+                                                </adra-form-group>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 mb-2">
+                                            <app-form-input-files [control]="files(i)"
+                                                (eventChange)="enventFiles($event,i)"
+                                                (eventRemove)="eventRemove($event,i)"></app-form-input-files>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </cdk-step>
+        </ng-stepper>
+    </div>
+    <div class="modal-footer justify-content-end">
+        @if (cdkStepper.selectedIndex!=0) {
+        <button class="btn btn-warning" (click)="cdkStepper.previous();removeObservation()">Anterior</button>
+        }
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if (cdkStepper.selectedIndex!=1) {
+        <button class="btn btn-success" [disabled]="confirmedStations.length==0 || this.formGroup.invalid"
+            (click)="cdkStepper.next();this.changeArray()">Siguiente</button>
+        }
+        @if (cdkStepper.selectedIndex==1) {
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+            [disabled]="formGroup.invalid">Guardar</button>
+        }
+        }
+    </div>
+</div>

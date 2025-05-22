@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+.input-file-1 {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  width: 100%;
+
+  & input {
+    border-radius: 0 !important;
+    background-color: #fff;
+  }
+  & #custom-button {
+     border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 0px;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nI2ZmZic+PHBhdGggZD0nTTE4IDE1djNINnYtM0g0djNjMCAxLjEuOSAyIDIgMmgxMmMxLjEgMCAyLS45IDItMnYtM2gtMnpNNyA5bDEuNDEgMS40MUwxMSA3LjgzVjE2aDJWNy44M2wyLjU5IDIuNThMMTcgOWwtNS01LTUgNXonLz48L3N2Zz4=');background-repeat: no-repeat; background-size: 20px 20px; background-position: center; 
+     &:hover {
+      background-color: #20c997;
+    }
+
+    &:active {
+      background-color: #20c997;
+    }
+  }
+  & #custom-modal {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  .input-file-1 {
+    grid-template-columns: auto 1fr auto;
+    transition: 0.3s;
+    width: 100%;
+  }
+}
+#fileInput {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
+#fileInfo {
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin-top: 10px;
+}
+:host ::ng-deep .input-group{
+  margin: 0px;
+}

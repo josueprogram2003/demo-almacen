@@ -1,0 +1,38 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-md-3">
+      @for (item of access.access; track $index) {
+        <div class="card  cursor-pointer card-quick-access" (click)="navigateToAccess(item.url)">
+          <div class="card-body ">
+            <div class="d-flex align-items-center">
+              <i class="bi me-2 text-adra" [ngClass]="item.icon"></i>
+              <div>{{item.name}}</div>
+            </div>
+          </div>
+        </div>
+      }
+      <div class="card  cursor-pointer card-quick-access" (click)="navigateToAccess('/')">
+        <div class="card-body ">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-arrow-return-left me-2 text-adra" ></i>
+            <div>Volver</div>
+          </div>
+        </div>
+      </div>
+      <div class="card p-3">
+        <h5 class="card-title">Perfiles</h5>
+        <div class="inline-block">
+          @for (item of profiles; track $index) {
+            <span class="badge bg-adra me-1" style="width: max-content;">{{item.name}}</span>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="card">
+          <img src="assets/images/background.png" alt="" width="100%">
+      </div>
+    </div>
+  </div>
+
+</div>

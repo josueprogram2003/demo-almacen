@@ -1,0 +1,13 @@
+<div class="users-page">
+    <div class="users-page__main">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control form-control-sm" (blur)="onBlur($event)" [(ngModel)]="searchQuery"
+                placeholder="Buscar Usuario" (keyup)="handleKeyUp($event)">
+        </div>
+        <div *ngIf="searchQuery.length > 4" class="users-page__main__list">
+            <app-user-list-item *ngFor="let items of dataList; let i = index" class="users-page__main__list__item"
+                [item]="items" [index]="i" (itemSelected)="showUserInfo($event)">
+            </app-user-list-item>
+        </div>
+    </div>
+</div>

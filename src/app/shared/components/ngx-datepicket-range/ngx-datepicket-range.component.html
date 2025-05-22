@@ -1,0 +1,18 @@
+<ng-container *ngIf="this.control?.status != 'DISABLED'">
+    <div class="form-group" [class.has-success]="control?.valid && (control?.dirty || control?.touched)"
+        [class.has-danger]="control?.invalid && (control?.dirty || control?.touched)">
+        <input type="text" placeholder="dd/mm/yyyy - dd/mm/yyyy" class="form-control form-control-sm" bsDaterangepicker
+             [bsValue]="date" [minDate]="minDate" [maxDate]="maxDate"
+            [bsConfig]="{ isAnimated: true, showWeekNumbers: false }" (bsValueChange)="onValueChange($event)"
+            (input)="change()" />
+    </div>
+</ng-container>
+<ng-container *ngIf="this.control?.status == 'DISABLED'">
+    <div class="form-group" [class.has-success]="control?.valid && (control?.dirty || control?.touched)"
+        [class.has-danger]="control?.invalid && (control?.dirty || control?.touched)">
+        <input type="text" placeholder="dd/mm/yyyy" class="form-control form-control-sm" bsDaterangepicker
+             [bsValue]="date" [minDate]="minDate" [maxDate]="maxDate"
+            [disabled]="this.control?.status == 'DISABLED'" [bsConfig]="{ isAnimated: true, showWeekNumbers: false }"
+            (bsValueChange)="onValueChange($event)" />
+    </div>
+</ng-container>

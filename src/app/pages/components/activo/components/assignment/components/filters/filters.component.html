@@ -1,0 +1,75 @@
+<app-breadcrumbs
+  title="Asignar usuario"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<div
+  class="card card-border m-0"
+  style="border-end-end-radius: 0px; border-end-start-radius: 0px"
+>
+  <div class="card-body" [formGroup]="formGroup">
+    <div class="row">
+      <div class="col-sm-3 mb-2">
+        <label for="" class="fs-5">Buscar usuario:</label>
+        <div class="input-group input-group-sm">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Escribir el usuario"
+            (typeaheadOnSelect)="onChange($event)"
+            formControlName="search"
+            [typeahead]="suggestions$"
+            [typeaheadAsync]="true"
+            typeaheadOptionField="fullName"
+          />
+          <button
+            class="btn btn-sm btn-info"
+            type="button"
+            id="button-addon1"
+            [disabled]="this.formGroup.invalid"
+          >
+            <i class="ri-search-line search-icon"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-5 d-flex align-items-end">
+        @if (employeed.fullName!=undefined) {
+        <p class="fs-6" style="margin-top: auto">
+          Usuario:
+          <strong>{{ employeed.fullName }}</strong>
+        </p>
+        }
+      </div>
+      <div class="col-sm-4 d-flex align-items-end">
+        <div class="" style="float: right; margin-left: auto">
+          <button
+            type="button"
+            class="btn btn-sm btn-danger btn-round me-2"
+            (click)="info()"
+            [disabled]="formGroup.invalid"
+          >
+            <i class="bi bi-file-pdf"></i>
+            Informe
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-info btn-round me-2"
+            (click)="export()"
+            [disabled]="formGroup.invalid"
+          >
+            <i class="bi bi-file-pdf"></i>
+            Exportar
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-success btn-round"
+            (click)="add()"
+            [disabled]="formGroup.invalid"
+          >
+            <i class="bi bi-plus-circle align-baseline"></i>
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

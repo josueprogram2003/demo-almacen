@@ -1,0 +1,62 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body" [formGroup]="formGroup">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <!-- <label>Fecha:</label> -->
+                    <adra-form-group [label]="'Fecha:'" [control]="formGroup.get('date')!">
+                        <input type="text" class="form-control form-control-sm" mwlFlatpickr placeholder="dd/mm/yyyy"
+                            formControlName="date" [dateFormat]="'d/m/Y'" [convertModelValue]="true"
+                            [disableMobile]="true" />
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-4">
+                    <!-- <label>Monto:</label> -->
+                    <adra-form-group [label]="'Monto:'" [control]="formGroup.get('amount')!">
+                        <p-inputNumber inputStyleClass="form-control form-control-sm" formControlName="amount" inputId="locale-us" mode="decimal" locale="en-US"
+                            [minFractionDigits]="2">
+                        </p-inputNumber>
+                        
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-4">
+                    <label>¿Afecta a la depreciación?</label>
+                    <br>
+                     <ui-switch formControlName="isPriceToDepreciate"></ui-switch>
+                </div>
+                <div class="col-sm-8">
+                    <label>Descripción</label>
+                    <textarea class="form-control form-control-sm" formControlName="description" name="" id="" cols="10"
+                        rows="2"></textarea>
+                </div>
+                <div class="col-sm-4">
+                    <app-form-input-files [control]="filesArray" 
+                        (eventChange)="enventFiles($event)" (eventRemove)="eventRemove($event)"  ></app-form-input-files>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+           >Guardar</button>
+        }
+    </div>
+</div>

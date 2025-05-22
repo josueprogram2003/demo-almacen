@@ -1,0 +1,60 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body" [formGroup]="formGroup">
+        <div class="row">
+            <div class="col-sm-8" style="height: 400px;" *ngIf="this.imgs.length!=0">
+                <!-- <adra-widget-slider-img [data]="imgs"></adra-widget-slider-img> -->
+            </div>
+            <div [ngClass]="imgs.length == 0 ? 'col-sm-7' : 'col-sm-4'">
+                <div>
+                    <div>
+                        <label class="fw-bold">Activo:</label>
+                        <p class="">{{this.data?.description}}</p>
+                    </div>
+                    <div>
+                        <label class="fw-bold ">Razones:</label>
+                        <!-- <p class="">{{this.data.assignmentReason}}</p> -->
+                    </div>
+                    <div>
+                        <label class="fw-bold">Condiciones:</label>
+                        <!-- <p class="">{{changeCondition(this.data.assignmentCondition)}}</p> -->
+                    </div>
+                    <div>
+                        <label class="fw-bold">Descripción:</label>
+                        <!-- <p class="">{{this.data.assignmentNotes}}</p> -->
+                    </div>
+                </div>
+                <div [formGroup]="formGroup" *ngIf="imgs.length > 0">
+                    <app-form-input-files [control]="filesArray"
+                        (evenDisplay)="eventDisplay($event)"></app-form-input-files>
+                </div>
+            </div>
+            <div [formGroup]="formGroup" *ngIf="imgs.length ==0" class="col-sm-5">
+                <app-form-input-files [control]="filesArray"
+                    (evenDisplay)="eventDisplay($event)"></app-form-input-files>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+            [disabled]="formGroup.invalid">Guardar</button>
+        }
+    </div>
+</div>

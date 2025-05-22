@@ -1,0 +1,96 @@
+<div class="card" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+    <div class="card-body pt-0">
+        @if(!typebody){
+        <div class="row">
+            @for (item of pagination.content; track $index) {
+            <div class="col-xxl-3 mb-2">
+                <div class="card border overflow-hidden card-border-success" style="min-height: 80%; width: 100%;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <label for="" class="item-text"><strong>Nombre :</strong> {{item.name}}</label><br>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="d-flex justify-content-end mb-1">
+                                    <span *ngIf="item.isActive == true" class="badge text-bg-success">Activo</span>
+                                    <span *ngIf="item.isActive == false" class="badge text-bg-danger">Inactivo</span>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-sm btn-warning me-1 btn-icon" title="Editar"
+                                        (click)="editModal(item)">
+                                        <i class="bx bx-pencil m-0"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger btn-icon" title="Cerrar"
+                                        aria-label="Cerrar" (click)="remove(item)">
+                                        <i class="bx bx-trash m-0"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }@else{
+        <div class="table-responsive">
+            <table class="table table-bordeless table-centered align-middle-table-nowrap m-0 tb-adra">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 60%;">Nombres</th>
+                        <th style="width: 20%;">Estado</th>
+                        <th class="border-top-0 text-center" style="width: 5%;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of pagination.content; track $index) {
+                    <tr>
+                        <td>
+                            {{$index+1}}
+                        </td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.isActive ? 'Activo' : 'Inactivo'}}</td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-warning  btn-icon" title="Editar"
+                                    (click)="editModal(item)">
+                                    <i class="bx bx-pencil m-0"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-danger  btn-icon" title="Cerrar"
+                                    aria-label="Cerrar" (click)="remove(item)">
+                                    <i class="bx bx-trash m-0"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+
+
+        <ng-container *ngIf="pagination.content">
+            <div class="row align-items-center text-center text-sm-start mt-3">
+                <div class="col-sm">
+                    <div class="text-muted">
+                        Mostrando
+                        <span class="fw-semibold">{{ pagination.pageSize }}</span> de
+                        <span class="fw-semibold">{{ pagination.pageSize }}</span>
+                        Resultados
+                    </div>
+                </div>
+                <div class="col-sm-auto mt-3 mt-sm-0">
+                </div>
+                <div class="col-sm-auto mt-3 mt-sm-0">
+                    <pagination class="pagination-wrap hstack justify-content-center gap-2"
+                        [totalItems]="pagination.totalItems" (pageChanged)="pageChanged($event)"
+                        [(ngModel)]="currentPage" [maxSize]="maxSize" [previousText]="'&lsaquo;'" [rotate]="false"
+                        [itemsPerPage]="this.page_size" [nextText]="'&rsaquo;'">
+                    </pagination>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

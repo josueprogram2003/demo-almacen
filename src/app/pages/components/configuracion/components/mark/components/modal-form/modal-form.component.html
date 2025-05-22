@@ -1,0 +1,73 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body">
+        <form action="" [formGroup]="formGroup">
+            <div class="row mb-2">
+                <div class="col-sm-4 mb-2">
+                    <label for="">Nombres:</label>
+                    <adra-form-group [control]="formGroup.get('name')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="name" id="name"
+                            placeholder="Escriba los nombres">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-4 mb-2">
+                    <label for="">Propietario:</label>
+                    <adra-form-group [control]="formGroup.get('owner')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="owner" id="owner"
+                            placeholder="Escriba el propietario">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-4 mb-2">
+                    <label for="">Industria:</label>
+                    <adra-form-group [control]="formGroup.get('industry')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="industry" id="industry"
+                            placeholder="Escriba la industria">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-4 mb-2">
+                    <label for="">Website:</label>
+                    <adra-form-group [control]="formGroup.get('website')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="website" id="website"
+                            placeholder="Escriba el website">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-4 mb-2">
+                    <label for="">Origen:</label>
+                    <adra-form-group [control]="formGroup.get('countryOrigin')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="countryOrigin"
+                            id="countryOrigin" placeholder="Escriba el origen">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-4 mb-2">
+                    <label for="">Descripción:</label>
+                    <adra-form-group [control]="formGroup.get('description')!">
+                        <textarea type="text" class="form-control form-control-sm" formControlName="description"
+                            id="description" placeholder="Escriba la industria"></textarea>
+                    </adra-form-group>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+            [disabled]="formGroup.invalid">Guardar</button>
+        }
+    </div>
+</div>

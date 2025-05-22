@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card-body">
+        <div class="row" >
+          <div class="col-xxl-12">
+                  <div class="input-group" >
+                    <ng-autocomplete
+                    [data]="usersData"
+                    [searchKeyword]="keyword"
+                    placeholder="Buscar por nombre o apellido"
+                    (inputChanged)="onChangeSearch($event)"
+                    (selected)="onSelectUser($event)"
+                    [itemTemplate]="itemTemplate"
+                    (inputCleared)="onCleared()"
+                    [notFoundTemplate]="notFoundTemplate"
+                    class="autocomplete"
+                    >
+                    </ng-autocomplete>
+                    <ng-template #itemTemplate let-item>
+                    <a [innerHTML]="item.fullName"></a>
+                    </ng-template>
+                    <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="'No se encontro al usuario'"></div>
+                    </ng-template>
+                    </div>
+          </div>
+
+        </div>
+      </div>
+  </div>
+</div>

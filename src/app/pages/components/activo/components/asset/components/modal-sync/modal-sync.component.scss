@@ -1,0 +1,49 @@
+:host ::ng-deep  .nav .nav-pills {
+  overflow: visible !important;
+}
+
+:host ::ng-deep .stepper-body {
+  margin: 0% !important;
+  padding: 0% !important;
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
+}
+:host ::ng-deep .stepper-header {
+  height: 0 !important;
+}
+:host ::ng-deep .accordion-header {
+  margin: 0% !important;
+}
+
+:host ::ng-deep .btn-primary {
+  color: #fff;
+  background-color: #2c8a73;
+  border-color: #2c8a73;
+  &::hover{
+    border-color: #2c8a73 !important;
+    border-color: #2c8a73 !important;
+  }
+}
+:host ::ng-deep .btn-default {
+  background-color: #d9d9d9;
+  border-color: #d9d9d9;
+  color: #222;
+}
+:host ::ng-deep label {
+  color: #222 !important;
+}
+:host ::ng-deep .button-bar {
+  display: flex;
+  justify-content: space-around;
+}
+
+:host ::ng-deep .accordion-button{
+  color: #fff;
+  background-color: #2c8a73;
+}
+::ng-deep .p-inputnumber{
+    width: 100% !important;
+}
+::ng-deep p-inputnumber{
+    width: 100% !important;
+}

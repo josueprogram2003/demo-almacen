@@ -1,0 +1,157 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body container">
+        @if(this.blobstaticConvert!=null){
+
+        <div class="card">
+            @switch (this.state) {
+            @case (1){
+            <div class="col-xl-auto">
+                <div class="card-body p-0">
+                    <div class="container d-flex justify-content-end">
+                        <a (click)="dowloand()" class="btn btn-primary"><i
+                                class="ri-download-2-line align-bottom me-1"></i> Descargar
+                        </a>
+                    </div>
+                    <h4 class=" mb-0 text-center">CARGO DE PRÉSTAMO DE ACTIVOS</h4>
+                </div>
+            </div>
+            }
+
+            @case (2){
+            <div class="col-xl-auto">
+                <div class="card-body p-0">
+                    <div class="container d-flex justify-content-end">
+                        <a (click)="dowloand()" class="btn btn-primary"><i
+                                class="ri-download-2-line align-bottom me-1"></i> Descargar
+                        </a>
+                    </div>
+                    <h4 class=" mb-0 text-center">CARGO DE DEVOLUCIÓN DE ACTIVOS</h4>
+                </div>
+            </div>
+            }
+            }
+            <div class="col-xl-auto">
+                <div class="card-header">
+                    <h6 class="card-title section-title mb-0">Datos de la persona que recibe el activo</h6>
+                </div>
+                <div class="card-body mt-2">
+                    <div class="table-responsive table-card container">
+                        <table class="table table-borderless align-middle mb-0">
+                            <tbody>
+                                <tr>
+                                    <th>Nombres y apellidos: </th>
+                                    <td><span id="t-no">{{data.fullname}}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>DNI: </th>
+                                    <td id="t-client">{{data.dni}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Área en que labora:</th>
+                                    <td>{{data.area}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Agencia de labores: </th>
+                                    <td>{{data.sede}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-auto">
+                <div class="card-header">
+                    <h6 class="card-title section-title mb-0">Características del activo a salir</h6>
+                </div>
+                <div class="card-body mt-2">
+                    <div class="table-responsive table-card">
+                        <div class="row container">
+                            <div class="col-md-6">
+                                <table class="table table-borderless align-middle mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <th>Nombre del activo: </th>
+                                            <td><span id="t-no">{{data.asset}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Modelo: </th>
+                                            <td id="t-client">{{data.model}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Marca: </th>
+                                            <td>{{data.brand}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Series: </th>
+                                            <td>{{data.serie}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless align-middle mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <th>Código de activo: </th>
+                                            <td>{{data.code}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Color: </th>
+                                            <td>{{data.color}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Estado: </th>
+                                            <td>{{data.state}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Observación: </th>
+                                            <td>{{data.observation}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="container d-flex justify-content-end">
+                <div class="form-check" [formGroup]="formGroup">
+                    <label class="check" for="checkBox1">
+                        Acepto firmar virtualmente este documento
+                    </label>
+                    <input class="form-check-input" type="checkbox" id="checkBox1" checked=""
+                        formControlName="isApproved" />
+                </div>
+            </div>
+            <br>
+        </div>
+
+
+
+        }
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+            [disabled]=" this.formGroup.get('isApproved')?.value==false || this.valid==true">Guardar</button>
+        }
+    </div>
+</div>

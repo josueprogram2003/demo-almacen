@@ -1,0 +1,6 @@
+<app-filters (params)="params = $event"></app-filters>
+<div class="p-0 m-0">
+    @if (params) {
+    <app-list [params]="params"></app-list>
+    }
+</div>

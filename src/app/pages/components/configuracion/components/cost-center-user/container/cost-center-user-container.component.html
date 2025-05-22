@@ -1,0 +1,108 @@
+<app-breadcrumbs
+  title="Configuración"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card card-border">
+      @if(initialState){
+        <div class="card-body">
+          <div class="row align-items-center g-2">
+            <div class="col-lg-3 me-auto">
+              <h6 class="card-title mb-0">Lista de centro de costo por usuario</h6>
+            </div>
+            <div class="col-lg-3">
+              <div class="search-box">
+                <input
+                  type="text"
+                  class="form-control search"
+                  placeholder="Buscar por nombre del usuario"
+                  [(ngModel)]="term"
+                  (keyup)="eventFilter()"
+                />
+                <i class="ri-search-line search-icon"></i>
+              </div>
+            </div>
+            <!--end col-->
+            <div class="col-lg-auto">
+              <div class="hstack flex-wrap gap-2">
+                <button
+                  type="button"
+                  class="btn btn-success add-btn"
+                  (click)="onModalUser()"
+                >
+                  <i class="bi bi-plus-circle align-baseline me-1"></i> Agregar
+                </button>
+              </div>
+            </div>
+            <!--end col-->
+          </div>
+        </div>
+        <div class="card-body position-relative">
+          <app-cost-center-user-list
+          [costCenterUserData]="usersCostCenters"
+          (evenPaginate)="eventPaginate($event)"
+          (evenView)="eventView($event)"
+          ></app-cost-center-user-list>
+          <ngx-spinner
+            bdOpacity="0.1"
+            bdColor="#fff"
+            size="medium"
+            color="skyblue"
+            type="ball-spin-clockwise"
+            [fullScreen]="false"
+          >
+          </ngx-spinner>
+        </div>
+      }@else {
+        <div class="card-body">
+          <div class="row align-items-center g-2">
+            <div class="col-lg-3 me-auto">
+              <h6 class="card-title mb-0">Lista de centro de costo de {{userCostCenter?.user}} </h6>
+            </div>
+            <!--end col-->
+            <div class="col-lg-auto">
+              <div class="hstack flex-wrap gap-2">
+                <button
+                  type="button"
+                  class="btn btn-success add-btn"
+                  (click)="onModalCostCenter()"
+                >
+                  <i class="bi bi-plus-circle align-baseline me-1"></i> Agregar
+                </button>
+                <button
+                type="button"
+                class="btn btn-info add-btn"
+                (click)="returnState()"
+              >
+              <i class="bi bi-arrow-return-left align-baseline me-1"></i>
+              Volver
+              </button>
+              </div>
+            </div>
+            <!--end col-->
+          </div>
+        </div>
+        <div class="card-body position-relative">
+          <app-cost-centers-list
+          [userCostCenterDetailData]="userCostCenterDetail"
+          (evenDelete)="onDelete($event)"
+          ></app-cost-centers-list>
+          <ngx-spinner
+            bdOpacity="0.1"
+            bdColor="#fff"
+            size="medium"
+            color="skyblue"
+            type="ball-spin-clockwise"
+            [fullScreen]="false"
+          >
+          </ngx-spinner>
+        </div>
+      }
+    </div>
+    <!--end card-->
+  </div>
+
+  <!--end col-->
+</div>
+<!--end row-->

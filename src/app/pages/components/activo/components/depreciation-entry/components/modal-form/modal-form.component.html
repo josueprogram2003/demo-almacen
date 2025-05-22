@@ -1,0 +1,215 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body">
+        <div [formGroup]="formGroup">
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <div>
+                        <label for="">Año:</label>
+                        <ng-select sm formControlName="year" class="" [items]="yearsData" bindValue="year"
+                            bindLabel="year" [clearable]="false" [searchable]="false"></ng-select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div>
+                        <label for="">Mes:</label>
+                        <ng-select sm formControlName="month" class="" bindValue="month" bindLabel="month"
+                            [clearable]="false" [searchable]="false" (change)="onSelect()">
+                            <ng-option *ngFor="let item of mes" [value]="item.month">{{item.name}}</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div>
+                        <label for="">Fecha de activación:</label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control form-control-sm" mwlFlatpickr
+                                placeholder="dd/mm/yyyy" formControlName="activationDate" [dateFormat]="'d/m/Y'"
+                                [convertModelValue]="true" [disableMobile]="true"
+                                (flatpickrChange)="selectDate($event)" />
+                            <button type="button" class="btn btn-danger btn-round btn-icon" container="body"
+                                ngbTooltip="Eliminar fecha" (click)="clearDate()">
+                                <i class="bx bx-trash m-0"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="" style="margin-top: auto; ">
+                        <label class="fs-6" for="">Usuario</label>
+                        <p>{{this.userData?.person?.name}} {{this.userData?.person?.firstSurname}}
+                            {{this.userData?.person?.secondSurname}}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-3  d-flex justify-content-end">
+                    @if (this.datas.exist == false && datas.details.length!=0) {
+                    <div class="card shadow-none m-0 rounded-lg border card-border-success">
+                        <div class="card-body pt-1 pb-1 ">
+                            <div class="d-flex align-items-center gap-2 mb-1 ">
+                                <div class="avatar-xs flex-shrink-0">
+                                    <div
+                                        class="avatar-title bg-body-secondary text-info border border-info-subtle rounded-circle">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="text-muted mb-0">Total a depresiar</p>
+                                </div>
+                            </div>
+                            <h3 class="mb-0">
+                                <span class="counter-value" [countUp]="totalDepresiaton"
+                                    [options]="{useIndianSeparators:false,decimal:'.', decimalPlaces:3,useGrouping: true,separator: ',',suffix:'',prefix: ''}">
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                    }
+                </div>
+                <div class="col-sm-3">
+                    <adra-form-group [label]="'Unidad de negocio:'" [control]="formGroup.get('businessUnit')!">
+                        <ng-select sm formControlName="businessUnit" class="" [clearable]="false"
+                            notFoundText="Sin datos" (change)="changeBusinnesUnit($event)"
+                            placeholder="Seleccionar la unidad de negocio">
+                            <ng-option [value]="''"> Seleccionar todos</ng-option>
+                            <ng-option *ngFor="let d of businessUnits" [value]="d.id">
+                                {{ d.name }}
+                            </ng-option>
+                        </ng-select>
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-4">
+                    <adra-form-group [label]="'Centro de costo:'" [control]="formGroup.get('costCenterId')!">
+                        <ng-select sm [clearable]="false" class="" notFoundText="Sin datos"
+                            formControlName="costCenterId" (change)="changeCostCener($event)"
+                            placeholder="seleccionar el centro de costo">
+                            <ng-option [value]="''"> Seleccionar todos</ng-option>
+                            <ng-option *ngFor="let item of costCenters" [value]="item.id">{{item.code}} -
+                                {{item.name}}</ng-option>
+                        </ng-select>
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-auto d-flex">
+                    <button type="button" class="btn btn-sm btn-success me-1" (click)="onExportExcel()"
+                        style="margin-top: auto;">
+                        <i class="bi bi-file-excel"></i>
+                        Expotar
+                    </button>
+                </div>
+
+
+
+
+            </div>
+        </div>
+        <br>
+        <div>
+            @if (this.datas.exist == false) {
+            @if (datas.details.length!=0) {
+            <div class="table-responsive">
+                <table class="table table-bordered tb-adra" style="font-size: 12px;">
+                    <thead class="text-primary">
+                        <tr>
+                            <th colspan="8">
+                                Listado de todos los activos que aun no se terminado de depreciar
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Serie</th>
+                            <th>Descripción activo</th>
+                            <th>Centro de costo</th>
+                            <th>Cuenta contable</th>
+                            <th>Saldo a depreciar</th>
+                            <th>Monto a depreciar</th>
+                            <th>Monto restante a depresiar
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of this._details$.asObservable()| async; track
+                        $index) {
+                        <tr>
+                            <td>
+                                {{$index +1}}
+                            </td>
+                            <td>{{item.serialNumber}}</td>
+                            <td>{{item.description}}</td>
+                            <td>
+                                <label for="" [ngbTooltip]="item.costCenterName">
+                                    {{item.costCenterName}}
+                                </label>
+                            </td>
+                            <td>
+                                <label for="" [ngbTooltip]="item.assetGroup.account.description">
+                                    {{item.assetGroup.account.accountNumber}}
+                                </label>
+                            </td>
+                            <td>S/. {{item.valueRemainingAsset.toFixed(2) | number:'1.0':'en-US'}}</td>
+
+                            <td>S/. {{item.amountDepreciation | number:'1.0':'en-US'}}
+                                ({{+item.assetGroup.depreciationPercentage * 100}}%)</td>
+                            <td>S/. {{ getFormattedDifference(item) }}</td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="container row align-items-center text-center text-sm-start mt-3">
+                    <div class="col-sm">
+                        <div class="text-muted">
+                            Mostrando
+                            <span class="fw-semibold">{{ this.pageSize }}</span> of
+                            <span class="fw-semibold">{{ this.pageSize }}</span>
+                            Resultados
+                        </div>
+                    </div>
+                    <div class="col-sm-auto mt-3 mt-sm-0">
+                        <pagination [totalItems]="(_total$.asObservable()| async)!" [(ngModel)]="page"
+                            [maxSize]="maxSize" [previousText]="'&lsaquo;'" [rotate]="false" [nextText]="'&rsaquo;'"
+                            [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"></pagination>
+                    </div>
+                </div>
+            </div>
+            }
+            }@else{
+            <div class="container">
+                <div class="alert alert-danger text-center" role="alert">
+                    No hay datos para registrar
+                </div>
+            </div>
+            }
+
+        </div>
+        @if (isLoadingList) {
+        <!-- Spinner personalizado -->
+        <ngx-spinner bdOpacity="0.1" bdColor="#fff" size="medium" color="skyblue" type="ball-spin-clockwise"
+            [fullScreen]="false"></ngx-spinner>
+        }
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+            [disabled]="formGroup.invalid">Guardar</button>
+        }
+    </div>
+</div>

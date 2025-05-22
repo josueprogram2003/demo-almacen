@@ -1,0 +1,43 @@
+<div class="table-responsive mt-3">
+    <table class="table table-borderless table-centered align-middle table-nowrap m-0">
+        <thead class="text-primary">
+            <th class="text-center border-top-0">N°</th>
+            <th class="border-top-0">Nombre</th>
+            <th class="text-center border-top-0">Acciones</th>
+        </thead>
+        <tbody *ngIf="usuarioLista != undefined">
+            <tr *ngFor="let data of usuarioLista.content; index as i">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{data.firstSurname}} {{data.secondSurname}}, {{ data.names }}</td>
+                <td class="text-center">
+                    <div class="btn-group" role="group" aria-label="Acciones">
+                        <button type="button" class="btn btn-subtle-danger btn-round btn-icon btn-neutral"
+                            ngbTooltip="Eliminar" container="body" (click)="onDeleteUsuario(data.id)">
+                            <i class="bx bx-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ng-container *ngIf="usuarioLista?.content">
+    <div class="row align-items-center text-center text-sm-start mt-3" *ngIf="usuarioLista?.content!.length > 0">
+        <div class="col-sm">
+            <div class="text-muted">
+                Mostrando
+                <span class="fw-semibold">{{ usuarioLista.size }}</span> de
+                <span class="fw-semibold">{{ usuarioLista.size }}</span>
+                Resultados
+            </div>
+        </div>
+        <div class="col-sm-auto mt-3 mt-sm-0">
+        </div>
+        <div class="col-sm-auto mt-3 mt-sm-0">
+            <pagination class="pagination-wrap hstack justify-content-center gap-2"
+                [totalItems]="usuarioLista.totalElements!" (pageChanged)="pageChanged($event)" [maxSize]="maxSize"
+                [previousText]="'&lsaquo;'" [rotate]="false" [itemsPerPage]="usuarioLista.size!" [nextText]="'&rsaquo;'">
+            </pagination>
+        </div>
+    </div>
+</ng-container>

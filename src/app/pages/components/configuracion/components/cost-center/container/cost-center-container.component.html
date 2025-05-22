@@ -1,0 +1,59 @@
+<app-breadcrumbs
+  title="Configuración"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
+<app-cost-center-filter
+  (filter)="getCostCenterByBusinessUnit($event)"
+></app-cost-center-filter>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row align-items-center g-2">
+          <div class="col-lg-3 me-auto">
+            <h6 class="card-title mb-0">Lista de centros de costo</h6>
+          </div>
+          <div class="col-lg-3">
+            <div class="search-box">
+              <input
+                type="text"
+                class="form-control search"
+                placeholder="Buscar por nombre del centro de costo"
+                [(ngModel)]="term"
+                (ngModelChange)="searchCostCenter()"
+              />
+              <i class="ri-search-line search-icon"></i>
+            </div>
+          </div>
+          <!--end col-->
+          <div class="col-lg-auto">
+            <div class="hstack flex-wrap gap-2">
+              <button type="button" class="btn btn-success add-btn" (click)="onSync()">
+                <i class="bi bi-arrow-repeat align-baseline me-1"></i>
+                Sincronizar
+              </button>
+            </div>
+          </div>
+          <!--end col-->
+        </div>
+      </div>
+      <div class="card-body position-relative">
+        <app-cost-center-list
+          [costCenterData]="costCenters"
+          (onChangeState)="changeState($event)"
+        ></app-cost-center-list>
+        <ngx-spinner
+          bdOpacity="0.1"
+          bdColor="#fff"
+          size="medium"
+          color="skyblue"
+          type="ball-spin-clockwise"
+          [fullScreen]="false"
+        ></ngx-spinner>
+      </div>
+    </div>
+    <!--end card-->
+  </div>
+  <!--end col-->
+</div>
+<!--end row-->

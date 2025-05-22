@@ -1,0 +1,16 @@
+<div class="row align-items-center text-center text-sm-start mt-3">
+    <div class="col-sm">
+        <div class="text-muted">
+            Mostrando
+            <span class="fw-semibold">{{pagination.size }}</span> de
+            <span class="fw-semibold">{{pagination.size }}</span>
+            Resultados
+        </div>
+    </div>
+    <div class="col-sm-auto mt-3 mt-sm-0">
+        <pagination class="pagination-wrap hstack justify-content-center gap-2" [totalItems]="pagination.totalElements"
+            (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage" [itemsPerPage]="pagination.size" [maxSize]="maxSize"
+            [previousText]="'&lsaquo;'" [nextText]="'&rsaquo;'"></pagination>
+
+    </div>
+</div>

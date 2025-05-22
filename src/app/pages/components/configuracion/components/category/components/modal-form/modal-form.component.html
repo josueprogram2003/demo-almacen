@@ -1,0 +1,60 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="formGroup">
+            <div class="row mb-2">
+                <div class="col-sm-6 mb-2">
+                    <label for="">Nombres:</label>
+                    <adra-form-group [control]="formGroup.get('name')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="name" id="name"
+                            placeholder="Escribir el nombre">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label for="">Código:</label>
+                    <adra-form-group [control]="formGroup.get('code')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="code" id="code"
+                            placeholder="Escriba los código">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label for="">Tipo:</label>
+                    <adra-form-group [control]="formGroup.get('type')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="type" id="type"
+                            placeholder="Escriba el tipo">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label for="">Descripción:</label>
+                    <adra-form-group [control]="formGroup.get('description')!">
+                        <textarea type="text" class="form-control form-control-sm" formControlName="description"
+                            id="description" placeholder="Escriba el descripción"></textarea>
+                    </adra-form-group>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+            [disabled]="formGroup.invalid">Guardar</button>
+        }
+    </div>
+</div>

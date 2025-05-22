@@ -1,0 +1,92 @@
+<div
+  [class.has-success]="control?.valid && (control?.dirty || control?.touched)"
+  [class.has-danger]="control?.invalid && (control?.dirty || control?.touched)"
+>
+<label *ngIf="label"><a *ngIf="control?.hasError('required')"  class="text-danger fw-bold">(*)</a> {{ label }}</label>
+  <ng-content></ng-content>
+  <div *ngIf="control?.invalid && (control?.dirty || control?.touched)">
+    <div *ngIf="control?.errors?.['required']" class="text-danger">
+      Este campo es requerido.
+    </div>
+    <div *ngIf="control?.errors?.['email']" class="text-danger">
+      Por favor, ingresa una dirección de correo electrónico válida.
+    </div>
+    <div *ngIf="control?.errors?.['minlength']" class="text-danger">
+      Por favor, ingresa al menos
+      {{ control?.errors?.['minlength']?.requiredLength }} caracteres.
+    </div>
+    <div *ngIf="control?.errors?.['maxlength']" class="text-danger">
+      Por favor, ingresa no más de
+      {{ control?.errors?.['maxlength']?.requiredLength }} caracteres.
+    </div>
+    <div *ngIf="control?.errors?.['min']" class="text-danger">
+      Por favor, ingresa un numero no menor a
+      {{ control?.errors?.['min']?.min }}.
+    </div>
+    <div *ngIf="control?.errors?.['max']" class="text-danger">
+      Por favor, ingresa no mayor de
+      {{ control?.errors?.['max']?.max }}.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[0-9]+$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa solo números.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[0-9-]*$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa solo números y guiones.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[a-zA-Z0-9]*$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa solo letras y números.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[a-zA-ZÀ-ÿ\u00f1\u00d1 ]*$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa solo letras y espacios.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[a-zA-ZÑñáéíóúÁÉÍÓÚ()0-9 ]*$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa solo letras, números y espacios.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[a-zA-ZÑñáéíóúÁÉÍÓÚ()0-9,.¡!¿?/\- ]*$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa solo letras, números, espacios y símbolos básicos.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[0-9]{0,5}(\.[0-9]{1,2})?$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa un número con hasta 5 dígitos y opcionalmente dos
+      decimales.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[^\n ]*$/'"
+      class="text-danger"
+    >
+      Por favor, no ingreses espacios ni saltos de línea.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^[1|2][0][0-9]{9}$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa un RUC válido.
+    </div>
+    <div
+      *ngIf="control?.errors?.['pattern']?.requiredPattern == '/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/'"
+      class="text-danger"
+    >
+      Por favor, ingresa una fecha válida en el formato dd-mm-yyyy.
+    </div>
+  </div>
+</div>

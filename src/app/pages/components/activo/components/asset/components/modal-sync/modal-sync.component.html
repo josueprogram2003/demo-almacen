@@ -1,0 +1,336 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body">
+        <ng-stepper #cdkStepper [linear]="false" class="cdksteppercontent nav nav-pills progress-bar-tab custom-nav"
+            [formGroup]="formGroup" style="overflow: visible !important;">
+            <cdk-step [optional]="false">
+                <ng-template cdkStepLabel>
+                    <div class="step-title"></div>
+                </ng-template>
+                <div [formGroup]="formGroup">
+                    <div class="row">
+                        <div class="col-sm-4 mb-2">
+                            <label for="">Buscar el orden de compra</label>
+                            <input type="text" class="form-control form-control"
+                                placeholder="Escribir el número de orden de compra" formControlName="search"
+                                (typeaheadOnSelect)="onChange($event)" formControlName="search"
+                                [typeahead]="suggestions$" [typeaheadAsync]="true" (keyup)="changeInput($event)"
+                                [typeaheadScrollable]="true" typeaheadOptionField="namePurchaseOrder" />
+                            <!-- <button class="btn btn-info" type="button" (click)="search()"
+                                [disabled]="formGroup.invalid">
+                                <i class="ri-search-line search-icon m-0"></i>
+                            </button> -->
+                            <!-- 
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-sm"
+                                    placeholder="Escribir el número de orden de compra" formControlName="search">
+                                <button class="btn btn-info" type="button" (click)="search()"
+                                    [disabled]="formGroup.invalid">
+                                    <i class="ri-search-line search-icon m-0"></i>
+                                </button>
+                            </div> -->
+                        </div>
+                        @if (articlesboolean) {
+                        <div>
+                            <p class="fs-6">Orden de compra: <strong>{{this.formGroup.get("search")?.value}}</strong>
+                            </p>
+                            <dual-list [sort]="keepSorted" [source]="source" [key]="key" [id]="idKey"
+                                [display]="display" [filter]="filter" [(destination)]="confirmed" height="300px"
+                                [format]="format" [disabled]="disabled"></dual-list>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </cdk-step>
+            <cdk-step [optional]="true">
+                <ng-template cdkStepLabel>
+                    <div class="step-title"></div>
+                </ng-template>
+                <div #stepTwo>
+                    <div>
+                        <label for="" class="fs-5">Lista de activos</label>
+                        <div ngbAccordion formArrayName="activos">
+                            @for (i of activos.controls; track $index) {
+                            <div ngbAccordionItem [collapsed]="true">
+                                <h2 ngbAccordionHeader>
+                                    <button ngbAccordionButton>{{i.get('name')?.value}}</button>
+                                </h2>
+                                <div ngbAccordionCollapse>
+                                    <div ngbAccordionBody [formGroupName]="$index" class="ps-0 pe-0">
+                                        <div class="row">
+                                            <div class="col-sm-4 mb-2" formGroupName="brand">
+                                                <adra-form-group [control]="i.get('brand.id')!" [label]="'Marca:'">
+                                                    <ng-select class="ng-select-sm" sm [clearable]="false"
+                                                        notFoundText="Sin datos" [addTag]="true" formControlName="id"
+                                                        (change)="changeMarca($event,i);changeForm(i,$index)"
+                                                        addTagText="Agregar marca:">
+                                                        @for (i of brands; track $index) {
+                                                        <ng-option [value]="i.id">{{i?.name}}</ng-option>
+                                                        }
+                                                    </ng-select>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="i.get('serialNumber')!" [label]="'Serie:'">
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        formControlName="serialNumber">
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <div style="display: grid; grid-template-columns: 1fr auto;">
+                                                    <label for=""><a class="text-danger fw-bold">(*)</a> Valor de
+                                                        compra:</label>
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            formControlName="selectionIgv"
+                                                            (change)="changeFormSelection(i,$index)" />
+                                                        <span class="form-check-sign">
+                                                            ¿Con igv?
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                                <adra-form-group [control]="i.get('unitPrice')!">
+                                                    <p-inputNumber inputStyleClass="form-control form-control-sm"
+                                                        formControlName="unitPrice" inputId="locale-us" mode="decimal"
+                                                        locale="en-US" [minFractionDigits]="3"
+                                                        (keyup)="onKey(i)"></p-inputNumber>
+                                                    <!-- <input type="number" class="form-control form-control-sm"
+                                                        formControlName="unitPrice" (keyup)="onKey(i)"
+                                                        (keypress)="decimalFilter($event)"> -->
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2" formGroupName="material">
+                                                <adra-form-group [control]="i.get('material.id')!"
+                                                    [label]="'Material:'">
+                                                    <ng-select class="ng-select-sm" sm [clearable]="false"
+                                                        notFoundText="Sin datos" formControlName="id"
+                                                        (change)="changeForm(i,$index)">
+                                                        @for (i of materials; track $index) {
+                                                        <ng-option [value]="i.id">{{i?.name}}</ng-option>
+                                                        }
+                                                    </ng-select>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="i.get('warranty_range_date')!"
+                                                    [label]="'Fechas de garantia:'">
+                                                    <adra-ngx-datepicket-range [control]="i.get('warranty_range_date')!"
+                                                        [date]="i.get('warranty_range_date')?.value"
+                                                        [IsConvocatoria]="false" [OtherDate]="false"
+                                                        [DateminDate]="this.minDate"
+                                                        (onChangesValues)="onChangesValues(i, $index);"></adra-ngx-datepicket-range>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="i.get('currencyId')!" [label]="'Moneda:'">
+                                                    <ng-select class="ng-select-sm" sm [clearable]="false"
+                                                        notFoundText="Sin datos" formControlName="currencyId"
+                                                        (change)="changeCurrys($event, i);changeForm(i,$index)">
+                                                        <ng-option *ngFor="let d of currencys" [value]="d.id">
+                                                            {{ d.name }}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <label for="">Proveedor:</label>
+                                                <adra-form-group [control]="i.get('supplierName')!">
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        formControlName="supplierName">
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="i.get('insurance_range_date')!"
+                                                    [label]="'Fechas del seguro:'">
+                                                    <adra-ngx-datepicket-range
+                                                        [control]="i.get('insurance_range_date')!"
+                                                        [date]="i.get('insurance_range_date')?.value"
+                                                        [IsConvocatoria]="false" [OtherDate]="false"
+                                                        [DateminDate]="this.minDate"
+                                                        (onChangesValues)="onChangesValues(i, $index);"></adra-ngx-datepicket-range>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <label for=""><a class="text-danger fw-bold">(*)</a> Tipo de cambio:
+                                                    <small class="span">(dolar a sol)</small>
+                                                </label>
+                                                <div class="input-group input-group-sm mb-0">
+                                                    <span class="input-group-text">S/.
+                                                    </span>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        formControlName="exchangeRate"
+                                                        (keyup)="changetype($event,i,$index);"
+                                                        (keypress)="decimalFilter($event)">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="formGroup.get('manufacturingYear')!"
+                                                    [label]="'Año de fabricación:'">
+                                                    <ng-select sm formControlName="manufacturingYear"
+                                                        [clearable]="false" class="ng-select-sm"
+                                                        placeholder="Selecionar el año" notFoundText="Sin datos"
+                                                        (change)="changeForm(i,$index)">
+                                                        <ng-option *ngFor="let item of yearData"
+                                                            [value]="item.value">{{item.year}}</ng-option>
+                                                    </ng-select>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="i.get('invoiceNumber')!"
+                                                    [label]="'N° de factura:'">
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        formControlName="invoiceNumber" (keyup)="changeForm(i, $index)">
+                                                </adra-form-group>
+
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="i.get('total')!" [label]="'Total:'">
+
+                                                    <p-inputNumber inputStyleClass="form-control form-control-sm"
+                                                        formControlName="total" inputId="locale-us" mode="decimal"
+                                                        locale="en-US" [minFractionDigits]="3" />
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2" formGroupName="assetGroup">
+                                                <adra-form-group [control]="i.get('assetGroup.id')!" [label]="'Grupo:'">
+                                                    <ng-select class="ng-select-sm" sm [clearable]="false"
+                                                        notFoundText="Sin datos" formControlName="id"
+                                                        (change)="changeForm(i,$index);changeGroup($event, i)">
+                                                        @for (i of groups; track $index) {
+                                                        <ng-option
+                                                            [value]="i?.id">{{i?.activationAccount?.accountNumber}} -
+                                                            {{i?.activationAccount?.description}}</ng-option>
+                                                        }
+                                                    </ng-select>
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="formGroup.get('invoiceDate')!"
+                                                    [label]="'Fecha de factura:'">
+                                                    <input type="text" class="form-control form-control-sm" mwlFlatpickr
+                                                        placeholder="dd/mm/yyyy" formControlName="invoiceDate"
+                                                        [dateFormat]="'d/m/Y'" [convertModelValue]="true"
+                                                        [disableMobile]="true"
+                                                        (flatpickrChange)="changeForm(i,$index,$event,'invoiceDate')" />
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <adra-form-group [control]="i.get('activationDate')!"
+                                                    [label]="'Fecha activación:'">
+                                                    <input type="text" class="form-control form-control-sm" mwlFlatpickr
+                                                        placeholder="dd/mm/yyyy" formControlName="activationDate"
+                                                        [dateFormat]="'d/m/Y'" [convertModelValue]="true"
+                                                        [disableMobile]="true"
+                                                        (flatpickrChange)="changeForm(i,$index,$event,'activationDate')" />
+                                                </adra-form-group>
+                                            </div>
+                                            <div class="col-sm-8 mb-2">
+                                                <div class="row">
+                                                    <div class="col-sm-6 mb-2">
+                                                        <div class="row">
+                                                            <div class="col-sm-8" formGroupName="account">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div>
+                                                                        <label for="">C. activación</label>
+                                                                        <p>{{changeaccountNumberActivation(i.get('activationAccount')?.value)}}
+                                                                        </p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="">C. depresiación:</label>
+                                                                        <p>{{changeaccountNumber(i.get('account.id')?.value)}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <label for="">Cuenta:</label>
+                                                                <ng-select class="ng-select-sm" sm [clearable]="false"
+                                                                    notFoundText="Sin datos" formControlName="id">
+                                                                    <ng-option [value]="i.id"
+                                                                        *ngFor="let i of accounts">{{i.accountNumber}}
+                                                                    </ng-option>
+                                                                </ng-select> -->
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <label for="">Depresiación:</label>
+                                                                <p>{{i.get('depreciationPercentage')?.value}}<span
+                                                                        class="">%</span></p>
+                                                                <!-- <div class="input-group input-group-sm mb-0">
+                                                                    <span class="input-group-text">%</span>
+                                                                    <input type="number"
+                                                                        class="form-control form-control-sm"
+                                                                        formControlName="depreciationPercentage" />
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 mb-2">
+                                                        <label for="">Centro de costo:</label>
+                                                        <adra-form-group [control]="i.get('costCenterId')!">
+                                                            <ng-select class="ng-select-sm" sm [clearable]="false"
+                                                                formControlName="costCenterId">
+                                                                @for ( r of costCenters; track $index) {
+                                                                <ng-option [value]="r.id">{{ r.name
+                                                                    }}</ng-option>
+                                                                }
+                                                            </ng-select>
+                                                        </adra-form-group>
+                                                    </div>
+                                                    <div class="col-sm-12 mb-2">
+                                                        <label for="">Descripción:</label>
+                                                        <adra-form-group [control]="i.get('description')!">
+                                                            <textarea type="text" class="form-control form-control-sm"
+                                                                formControlName="description"
+                                                                (keyup)="changeForm(i, $index)"></textarea>
+                                                        </adra-form-group>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                @if (formGroup.get('serialNumber')?.value != '') {
+                                                <app-form-input-files [control]="files(i)"
+                                                    [controlRemove]="filesRemove(i)"
+                                                    (eventChange)="enventFiles($event, i,$index)"
+                                                    (eventRemove)="eventRemove($event, i, $index)"></app-form-input-files>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </cdk-step>
+        </ng-stepper>
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button class="btn  btn-warning" (click)="cdkStepper.previous();removeActivos()"
+            *ngIf="cdkStepper.selectedIndex!=0">
+            Anterior
+        </button>
+        <button type="button" class="btn btn-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(cdkStepper.selectedIndex!=1){
+        <button class="btn btn-success" [disabled]="confirmedStations.length==0 || this.formGroup.invalid"
+            (click)="changeValues();cdkStepper.next()">Siguiente</button>
+        }
+        @if (cdkStepper.selectedIndex==1) {
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Cargando... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()">Guardar</button>
+        }
+        }
+    </div>
+</div>

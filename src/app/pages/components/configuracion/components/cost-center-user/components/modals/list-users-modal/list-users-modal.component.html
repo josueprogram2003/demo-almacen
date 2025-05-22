@@ -1,0 +1,76 @@
+<div class="modal-content border-0">
+  <div class="modal-header bg-adra p-3">
+    <h5 class="modal-title text-white" id="addCourseModalLabel">
+      {{ title }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      (click)="activeModal.close()"
+    ></button>
+  </div>
+
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label for="instructor-input" class="form-label"
+              >Buscar Usuario:<span class="text-danger">*</span></label
+            >
+            <ng-autocomplete
+            [data]="usersData"
+            [searchKeyword]="keyword"
+            placeholder="Buscar por nombre o usuario"
+            (selected)="selectEvent($event)"
+            (inputChanged)="onChangeSearch($event)"
+            [itemTemplate]="itemTemplate"
+            (inputCleared)="onCleared()"
+            [notFoundTemplate]="notFoundTemplate"
+            >
+            </ng-autocomplete>
+
+            <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.search"></a>
+            </ng-template>
+            <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="'No se encontro al usuario'"></div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <!--end row-->
+    </div>
+    <div class="modal-footer">
+      <div class="hstack gap-2 justify-content-end">
+        <button
+          type="button"
+          class="btn btn-ghost-danger"
+          (click)="activeModal.close()"
+        >
+          <i class="bi bi-x-lg align-baseline me-1"></i> Cerrar
+        </button>
+        @if(isLoading){
+          <button type="button" class="btn btn-success btn-load float-end">
+            <span class="d-flex align-items-center">
+              <span class="spinner-border flex-shrink-0" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </span>
+              <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+          </button>
+          }@else {
+            <button
+          type="submit"
+          class="btn btn-success"
+          id="add-btn"
+          [disabled]="!userSelected"
+          (click)="onSave()"
+        >
+          Guardar
+        </button>
+          }
+      </div>
+    </div>
+</div>
+

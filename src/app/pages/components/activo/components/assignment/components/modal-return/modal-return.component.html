@@ -1,0 +1,115 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body" [formGroup]="formGroup">
+        <div class="row">
+            <div class="col-sm-6 d-flex">
+                <p class="fs-5" style="margin-top: auto; margin-bottom: auto;">Usuario:
+                    <strong>{{employeed.fullName}}</strong>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-7 mb-2">
+                        <!-- <label for="">Unidad de negocio:</label> -->
+                        <adra-form-group [label]="'Unidad de negocio:'" [control]="formGroup.get('businessUnit')!">
+                            <ng-select sm formControlName="businessUnit" class="ng-select-sm" [clearable]="false"
+                                placeholder="Seleccionar la unidad de negocio"
+                                notFoundText="Sin datos" (change)="changeBusinnesUnit($event)">
+                                <ng-option *ngFor="let d of businessUnits" [value]="d.id">
+                                    {{ d.name }}
+                                </ng-option>
+                            </ng-select>
+                        </adra-form-group>
+                    </div>
+                    <div class="col-sm-5 mb-2">
+                        <!-- <label>Fecha de devolución:</label> -->
+                        <adra-form-group [control]="formGroup.get('date')!" [label]="'Fecha de devolución:'">
+                            <input type="text" class="form-control form-control-sm" mwlFlatpickr
+                                placeholder="dd/mm/yyyy" formControlName="date" [dateFormat]="'d/m/Y'"
+                                [convertModelValue]="true" [disableMobile]="true" />
+                        </adra-form-group>
+                    </div>
+                    <div class="col-sm-7 mb-2">
+                        <!-- <label for="">Centro de costo:</label> -->
+                        <adra-form-group [label]="'Centro de costo:'" [control]="formGroup.get('costCenterId')!">
+                            <ng-select sm [clearable]="false" class="ng-select-sm" notFoundText="Sin datos"
+                                formControlName="costCenterId"
+                                placeholder="Seleccionar el centro de costos"
+                                >
+                                <ng-option value="0" *ngFor="let item of costCenters"
+                                    [value]="item.id">{{item.name}}</ng-option>
+                            </ng-select>
+                        </adra-form-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div formGroupName="observation">
+            <label for="">
+                <span class="h5">Observaciones:</span>
+                <span class="fs-5"> {{$any(formGroup).get('observation.name').value}}</span>
+            </label>
+            <div class="row">
+                <div class="row">
+                    <div class="col-sm-6 mb-5">
+                        <div class="mb-2">
+                            <!-- <label for="">Razones:</label> -->
+                            <adra-form-group [label]="'Razones:'" [control]="$any(formGroup).get('observation.reason')!">
+                                <textarea type="text" class="form-control form-control-sm" formControlName="reason"
+                                    aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                    </textarea>
+                            </adra-form-group>
+                        </div>
+                        <div class="mb-2">
+                            <!-- <label for="">Condición:</label> -->
+                            <adra-form-group [label]="'Condición:'" [control]="$any(formGroup).get('observation.condition')!">
+                                <ng-select [clearable]="false" [searchable]="false" class="ng-select-sm"
+                                    notFoundText="Sin datos" formControlName="condition"
+                                    placeholder="Seleccionar la condición">
+                                    @for (item of assignmentConditions; track $index) {
+                                    <ng-option [value]="item?.id">
+                                        {{item?.name}}
+                                    </ng-option>
+                                    }
+                                </ng-select>
+                            </adra-form-group>
+                        </div>
+                        <div class="mb-2">
+                            <!-- <label for="">Descripción:</label> -->
+                             <adra-form-group [label]="'Descripción:'" [control]="$any(formGroup).get('observation.notes')!">
+                                <textarea type="text" class="form-control form-control-sm" formControlName="notes"
+                                    aria-label="Small" aria-describedby="inputGroup-sizing-sm"></textarea>
+                            </adra-form-group>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-2">
+                        <app-form-input-files [control]="filesArray" (eventChange)="enventFiles($event)"
+                            (eventRemove)="eventRemove($event)"></app-form-input-files>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+            [disabled]="formGroup.invalid">Guardar</button>
+        }
+    </div>
+</div>

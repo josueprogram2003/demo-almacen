@@ -1,0 +1,37 @@
+<app-breadcrumbs title="Asiento depresiación" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<div class="card card-border m-0" style="border-end-end-radius: 0px; border-end-start-radius: 0px;">
+    <div class="card-body" [formGroup]="formGroup">
+        <div class="row">
+            <div class="col-sm-2">
+                <label for="">Años:</label>
+                <ng-select sm formControlName="year" class="ng-select-sm" [items]="yearsData" bindValue="year"
+                    bindLabel="year" [clearable]="false" [searchable]="false" (change)="changeFiltro()"></ng-select>
+            </div>
+            <div class="col-sm-2">
+                <label for="">Meses:</label>
+                <ng-select sm formControlName="month" class="ng-select-sm" bindValue="month" bindLabel="month"
+                    [clearable]="false" [searchable]="false" >
+                    <ng-option *ngFor="let item of mes" [value]="item.month">{{item.name}}</ng-option>
+                </ng-select>
+            </div>
+            <div class="col-sm-3">
+                <!-- <label>Buscar activo por nombre:</label>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Escribir el usuario" formControlName="value">
+                    <button class="btn btn-sm btn-info" type="button" id="button-addon1"
+                        [disabled]="this.formGroup.invalid" (click)="changeFiltro()">
+                        <i class="ri-search-line search-icon"></i>
+                    </button>
+                </div> -->
+            </div>
+            <div class="col-sm-5  d-flex align-items-end">
+                <div class="" style="float: right;margin-left: auto;">
+                    <button type="button" class="btn btn-sm btn-success " (click)="newCreate()">
+                        <i class="bi bi-plus-circle align-baseline"></i>
+                        Generar asiento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

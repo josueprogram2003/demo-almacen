@@ -1,0 +1,71 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body">
+        <form action="" [formGroup]="formGroup">
+            <div class="row mb-2">
+                <div class="col-sm-6 mb-2">
+                    <label for="">Nombres:</label>
+                    <adra-form-group [control]="formGroup.get('name')!">
+                        <input type="text" class="form-control form-control-sm" formControlName="name" id="name"
+                            placeholder="Escriba los nombres">
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-6 mb-2" formGroupName="account">
+                    <label for="">Cuenta depresiación:</label>
+                    <adra-form-group [control]="formGroup.get('account.id')!">
+                        <ng-select sm class="ng-select-sm" formControlName="id"  [clearable]="false">
+                            @for (i of accountsDepresiation; track $index) {
+                            <ng-option [value]="i?.id">{{i?.accountNumber}}
+                                {{i?.description}}</ng-option>
+                            }
+                        </ng-select>
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label for="">Porcentaje depresiación:</label>
+                    <adra-form-group [control]="formGroup.get('depreciationPercentage')!">
+                        <div class="input-group input-group-sm mb-0">
+                            <span class="input-group-text">%</span>
+                            <input type="text" class="form-control form-control-sm"
+                                formControlName="depreciationPercentage" id="depreciationPercentage"
+                                placeholder="Escriba porcentaje" maxlength="3" (keypress)="numberOnly($event)">
+                        </div>
+                    </adra-form-group>
+                </div>
+                <div class="col-sm-6 mb-2" formGroupName="activationAccount">
+                    <label for="">Cuenta de activación:</label>
+                    <adra-form-group [control]="formGroup.get('activationAccount.id')!">
+                        <ng-select sm class="ng-select-sm" formControlName="id"  [clearable]="false">
+                            @for (i of accountsActivation; track $index) {
+                            <ng-option [value]="i?.id">{{i?.accountNumber}}
+                                {{i?.description}}</ng-option>
+                            }
+                        </ng-select>
+                    </adra-form-group>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer justify-content-end">
+        <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        @if(isLoading){
+        <button type="button" class="btn btn-success btn-load">
+            <span class="d-flex align-items-center">
+                <span class="spinner-border flex-shrink-0" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </span>
+                <span class="flex-grow-1 ms-2"> Loading... </span>
+            </span>
+        </button>
+        }@else{
+        <button type="button" class="btn btn-success" (click)="onGuardar()"
+            [disabled]="formGroup.invalid">Guardar</button>
+        }
+    </div>
+</div>

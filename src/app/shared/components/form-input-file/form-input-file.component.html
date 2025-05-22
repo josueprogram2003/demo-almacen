@@ -1,0 +1,37 @@
+<div class="input-group input-group-{{classNameInput}}">
+    <div class="input-file-1">
+        <input type="file" id="fileInput" #fileinput (change)="onChange($event)" [accept]="accept_type">
+        <button type="button" class="btn btn-success btn-{{classNameInput}} btn-icon" id="custom-button" (click)="fileinput.click()"
+            [disabled]="!control.enabled">
+        </button>
+        <input type="text" class="form-control form-control-{{classNameInput}} input-group-{{classNameInput}}" [disabled]="!control.enabled"
+            [value]="this.name_file" (click)="fileinput.click()" readonly="readonly">
+        <button class="btn btn-outline-secondary btn-{{classNameInput}} btn-icon" id="custom-modal" data-toggle="modal"
+            [disabled]="display" type="button" (click)="open(dialog)">
+            <i class="bi bi-eye-fill m-0"></i>
+        </button>
+    </div>
+</div>
+<ng-template #dialog let-modal>
+    <div class="modal-content">
+        <div class="modal-header bg-adra p-3">
+            <h5 class="modal-title text-white fw-bold" id="ModalLabel">Previsualización</h5>
+            <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="modal.dismiss()"
+                aria-label="Cerrar">
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="img-fluid">
+                <img [src]="this.filePreview" alt="" 
+                    *ngIf="this.accept_images.includes(this.file_type)" class="rounded mx-auto d-block" style="width: 100%;">
+            </div>
+            <iframe onload="false" [src]="this.urlSafe" height="520" frameborder="0" class="text-center"
+                *ngIf="this.accept_documents.includes(this.file_type)" style="width: 100%;">
+            </iframe>
+        </div>
+        <div class="modal-footer justify-content-end">
+            <button type="button" class="btn btn-ghost-danger" (click)="modal.close()"> <i
+                    class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+        </div>
+    </div>
+</ng-template>

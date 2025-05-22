@@ -1,0 +1,80 @@
+<!-- end table responsive -->
+@if(countExoneratedCostCenterData.length! > 0){
+  <div class="table-responsive table-card mt-1 mb-1">
+    <table
+      class="table table-centered align-middle table-custom-effect table-nowrap mb-0"
+    >
+      <thead class="text-muted">
+        <tr>
+          <th scope="col">N° de Cuenta</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Unidad de Negocio</th>
+          <th scope="col">Codigo de Centro de Costo</th>
+          <th scope="col">Centro de Costo</th>
+          <th scope="col">Fecha de Creación</th>
+          <th class="text-center" scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(countExoneratedCostCenter of countExoneratedCostCenterData; track $index) {
+        <tr>
+          <td>{{ countExoneratedCostCenter.count }}</td>
+          <td>{{ countExoneratedCostCenter.description }}</td>
+          <td>{{ countExoneratedCostCenter.businessUnitName }}</td>
+          <td>{{ countExoneratedCostCenter.costCenterCode! }}</td>
+          <td>{{ countExoneratedCostCenter.costCenterName }}</td>
+          <td>{{ countExoneratedCostCenter.createdDate | date: 'dd/MM/yyyy'  }}</td>
+          <td>
+            <ul class="d-flex gap-2 list-unstyled mb-0 justify-content-center">
+              <li>
+                <a
+                  class="btn btn-subtle-secondary btn-icon btn-sm"
+                  data-edit-id="24301901"
+                  (click)="onEdit(countExoneratedCostCenter.id!)"
+                  ><i class="bx bx-pencil"></i
+                ></a>
+              </li>
+              <li>
+                <a
+                class="btn btn-subtle-danger btn-icon btn-sm remove-item-btn"
+                  (click)="onDelete(countExoneratedCostCenter.id!)"
+                ><i class="bx bx-trash"></i
+                ></a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+<!--   <div class="row mt-3 align-items-center" id="pagination-element">
+    <div class="col-sm">
+      <div class="text-muted text-center text-sm-start">
+        Mostrando
+        <span class="fw-semibold">{{ countExoneratedCostCenterData.numberOfElements }}</span> de
+        <span class="fw-semibold">{{ countExoneratedCostCenterData.totalElements }}</span>
+        Resultados
+      </div>
+    </div> -->
+<!--     <div class="col-sm-auto mt-3 mt-sm-0">
+      <pagination
+        class="pagination-wrap hstack gap-2 justify-content-center"
+        [totalItems]="countExoneratedCostCenterData.totalElements!"
+        [itemsPerPage]="countExoneratedCostCenterData.size!"
+        [previousText]="'&lsaquo;'"
+        [rotate]="false"
+        [ngModel]="countExoneratedCostCenterData.number! + 1"
+        [maxSize]="5"
+        [nextText]="'&rsaquo;'"
+        (pageChanged)="pageChanged($event)"
+      ></pagination>
+    </div>
+  </div>
+  -->
+  }@else{
+  <no-result-message></no-result-message>
+  }
+
+  <!-- end noresult -->

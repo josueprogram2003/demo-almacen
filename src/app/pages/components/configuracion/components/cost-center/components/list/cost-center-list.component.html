@@ -1,0 +1,87 @@
+
+    <!-- end table responsive -->
+    @if(costCenterData.length > 0){
+      <div class="table-responsive table-card mt-1 mb-1 table-height">
+        <table
+          class="table table-centered align-middle table-custom-effect table-nowrap mb-0"
+        >
+          <thead class="text-muted">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Codigo</th>
+              <th  scope="col">Nombre</th>
+              <th scope="col">Descripción</th>
+              <th class="w-25" scope="col">Area</th>
+              <th class="w-25" scope="col">Sede</th>
+              <th scope="col">Estado</th>
+              <th class="text-center w-25" scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for(costCenter of costCenterData; track $index) {
+            <tr>
+              <td>{{$index + 1}}</td>
+              <td>{{costCenter.code}}</td>
+              <td>{{costCenter.name}}</td>
+              <td >{{costCenter.description}}</td>
+              <td>{{costCenter?.nameArea}}</td>
+              <td>{{costCenter?.namePosition}}</td>
+              <td>
+                @switch (costCenter.state) {
+                 @case (false) {
+                   <span class="badge bg-danger">Inactivo</span>
+                 }
+                  @case (true) {
+                    <span class="badge bg-success">Activo</span>
+                  }
+                }
+              </td>
+              <td>
+                <ul class="d-flex gap-2 list-unstyled mb-0 justify-content-center">
+                 @switch (costCenter.state) {
+                  @case (false) {
+                    <li>
+                      <a
+                        class="btn btn-subtle-warning btn-icon"
+                        data-edit-id="24301901"
+                        (click)="changeState(costCenter.code!, true)"
+                        ><i class="bi bi-arrow-counterclockwise fs-3"></i
+                      ></a>
+                    </li>
+                  }
+                  @case (true) {
+                    <li>
+                      <a
+                        class="btn  btn-subtle-danger btn-icon"
+                        (click)="changeState(costCenter.code!, false)"
+                        ><i class=" bx bx-x fs-3"></i
+                      ></a>
+
+                    </li>
+                  }
+                 }
+
+                </ul>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row mt-3 align-items-center" id="pagination-element">
+        <div class="col-sm">
+          <div class="text-muted text-center text-sm-start">
+            Mostrando
+                   <span class="fw-semibold">{{ costCenterData.length }}</span> de
+            <span class="fw-semibold">{{ costCenterData.length }}</span>
+            Resultados
+          </div>
+        </div>
+      </div>
+
+    }@else{
+      <no-result-message></no-result-message>
+    }
+  <!-- end noresult -->
+

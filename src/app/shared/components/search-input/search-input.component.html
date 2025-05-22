@@ -1,0 +1,12 @@
+<adra-form-group [control]="formGroupClass">
+  <div class="input-group input-group-sm no-border mb-0">
+    <ng-content></ng-content>
+    <div class="input-group-append">
+      <div class="input-group-text p-0">
+        <button [disabled]="disable" class="btn btn-outline-transparent btn-magnify {{ buttonClass }}" style="border: 0px;" type="submit">
+          <i class="ri-search-line"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</adra-form-group>

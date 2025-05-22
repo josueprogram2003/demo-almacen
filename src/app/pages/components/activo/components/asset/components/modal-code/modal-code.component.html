@@ -1,0 +1,83 @@
+<div class="modal-content">
+    <div class="modal-header bg-adra p-3">
+        <h5 class="modal-title text-white fw-bold" id="ModalLabel">{{title}}</h5>
+        <button type="button" class="btn-close btn-close-white" title="Cerrar" (click)="activeModal.close()"
+            aria-label="Cerrar">
+        </button>
+    </div>
+    <div class="modal-body" style="background-color: #ffff;">
+        <div class="row" #pdfTable style="background-color: #ffff;padding-top: 25px;">
+            <div class="" style="background-color: #ffff; box-shadow: none !important;">
+                <div class="" style="background-color: #ffff;">
+                    <div style="background-color: #ffff; display: grid; grid-template-columns: 1fr 280px;">
+                        <div class="">
+                            <div class="" style="display: flex; justify-content: center;">
+                                <img src="./assets/img/logo/logo-horizontal-default.png" class="img-fluid"
+                                    style="height: 80px;" alt="">
+                            </div>
+                            <div class="p-1"></div>
+                            <div>
+                                <!-- <div
+                                    style="writing-mode: vertical-lr; transform: rotate(180deg); font-weight: bold; font-size: 20px;">
+                                    INV-2025
+                                </div> -->
+                                <!-- <div
+                                    style="width:1px;word-wrap: break-word;white-space:pre-wrap; font-weight: bold; font-size: 15px;">
+                                    INV-2025
+                                </div> -->
+                                <div>
+                                    <p class=""
+                                        style="font-weight: 600; font-size: 30px; margin-bottom: 0px; text-align: center; font-weight: bolder; text-transform: uppercase;">
+                                        {{this.data.description}}
+                                    </p>
+                                    <br>
+                                    <p class=""
+                                        style="font-weight: 600; font-size: 30px; margin-bottom: 0px; text-align: center;">
+                                        {{this.data.serialNumber}}</p>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="">
+                            <div class="" style="display: flex; justify-content: center;">
+                                <qrcode [qrdata]="this.data.url" [width]="250" [margin]="0"
+                                    [errorCorrectionLevel]="'M'">
+                                </qrcode>
+                            </div>
+                            <div style="font-weight: bold; font-size: 20px; text-align: center;">
+                                INV-2025
+                            </div>
+                        </div>
+                    </div>
+                    <p class="" style="font-weight: 600; font-size: 30px; margin-bottom: 0px; text-align: center;">
+                        {{this.date.getFullYear()}} - {{this.data?.code}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-end">
+        <!-- <div [formGroup]="formGroup" class="d-flex justify-content-evenly">
+             <label for="" class="fs-5" style="margin-top: auto; margin-bottom: auto;">Cantidad:</label>
+                <input type="number" class="form-control form-control-sm w-25" formControlName="contador" min="1">
+        </div> -->
+        <div>
+            <button type="button" class="btn btn-ghost-danger" (click)="activeModal.close()"> <i
+                    class="bi bi-x-lg align-baseline me-1"></i> Cerrar</button>
+            @if(isLoading){
+            <button type="button" class="btn btn-success btn-load">
+                <span class="d-flex align-items-center">
+                    <span class="spinner-border flex-shrink-0" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </span>
+                    <span class="flex-grow-1 ms-2"> Loading... </span>
+                </span>
+            </button>
+            }@else{
+            <button type="button" class="btn btn-success" (click)="print()"
+                [disabled]="formGroup.invalid">Imprimir</button>
+            }
+        </div>
+    </div>
+</div>

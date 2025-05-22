@@ -1,0 +1,57 @@
+.item {
+    display: flex;
+    padding: 3px;
+    flex-direction: row;
+    align-items: center;
+    background: white;
+    border-bottom: 1px solid #ccc;
+    &__img {
+      margin-right: 10px;
+      img {
+        height: 40px;
+        width: 40px;
+      }
+    }
+    &__content {
+      &__name {
+        font-weight: bold;
+        font-size: 12px;
+      }
+      &__email {
+        font-size: 11px;
+      }
+    }
+
+    &--active, :focus {
+      background: #333;
+      color: white;
+    }
+  }
+    .item:hover {
+      cursor: pointer;
+      background: #333;
+      color: white;
+    }
+  .disabled {
+    cursor: not-allowed;
+    background: #e9ecef !important;
+    color: #dc3545 !important;
+  }
+  small {
+    color: blue;
+  }
+  /* :host:focus {
+    background: lightblue;
+    color: #fff;
+ }*/
+  /*.active {
+    background-color: lightblue;
+    color: #fff;
+  }
+  
+  .disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: #e9ecef !important;
+    color: #dc3545 !important;
+  }*/

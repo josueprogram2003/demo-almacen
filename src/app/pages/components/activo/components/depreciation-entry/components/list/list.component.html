@@ -1,0 +1,63 @@
+<div class="card" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+    @if (isLoadingList) {
+    <!-- Spinner personalizado -->
+    <ngx-spinner bdOpacity="0.1" bdColor="#fff" size="medium" color="skyblue" type="ball-spin-clockwise"
+        [fullScreen]="false"></ngx-spinner>
+    }
+
+    <div class="card-body pt-0">
+        <div class="table-responsive">
+            <table class="table table-bordeless table-centered align-middle-table-nowrap m-0 tb-adra">
+                <thead>
+                    <tr>
+                        <th class="border-top-0">#</th>
+                        <th style="width: 15%;">Mes</th>
+                        <th style="width: 15%;">Año</th>
+                        <th style="width: 20%;">Total</th>
+                        <th style="width: 15%;">Fecha</th>
+                        <th style="width: 15%;">Estado</th>
+                        <th class="border-top-0 text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of pagination.content; track $index) {
+                    <tr>
+                        <td>
+                            {{$index+1}}
+                        </td>
+                        <td>{{ serviceMaestra.getMonthsNames()[item.month-1]}}</td>
+                        <td>{{item.year}}</td>
+                        <td>S/. {{item.totalDepreciateAmount | number:'1.0':'en-US'}}</td>
+                        <td>{{item.createdDate | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{item.state != 2 ? "Activo" : "Anulado"}}</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group" aria-label="Acciones">
+                                <button type="button" class="btn btn-info btn-round btn-icon btn-neutral"
+                                    container="body" ngbTooltip="Detalle" (click)="onDetail(item)">
+                                    <i class="bi bi-eye-fill m-0"></i>
+                                </button>
+                                @if(item.state!=2 && !item.isUploaded){
+                                <button type="button" class="btn btn-danger btn-round btn-icon btn-neutral"
+                                    container="body" ngbTooltip="Eliminar" (click)="remove(item)">
+                                    <i class="bx bx-trash m-0"></i>
+                                </button>
+                                }
+                                @if(!item.isUploaded && item.state!=2){
+                                <button type="button" class="btn btn-primary btn-round btn-icon btn-neutral"
+                                    ngbTooltip="Sincronizar" (click)="sync(item)">
+                                    <i class="bx bx-sync"></i>
+                                </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <ng-container *ngIf="pagination.content">
+            <!-- <app-ngx-pagination-quarkus [pagination]="pagination" [currentPage]="this.page_number"
+                (pageChange)="pageChanged($event)"></app-ngx-pagination-quarkus> -->
+        </ng-container>
+    </div>
+</div>

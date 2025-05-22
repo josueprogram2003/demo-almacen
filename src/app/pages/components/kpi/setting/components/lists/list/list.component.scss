@@ -1,0 +1,37 @@
+.card-dashed {
+  box-shadow: unset;
+  background-color: transparent;
+  // border: 2px solid HSLA(38, 16%, 76%, 0.5);
+  border-style: dashed;
+  border-top:none !important;
+}
+.container-fluid{
+    max-width: 100%;
+}
+
+
+h5{
+    font-weight: 400;
+    font-size: 1.25rem;
+}
+
+.reference{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    margin-top: auto;
+    margin-bottom: auto !important;
+}
+
+:host ::ng-deep .ng-select.auto-grow-pagination {
+  display: flex;
+
+  .ng-select-container {
+    width: 60% !important;
+  }
+
+  .ng-dropdown-panel {
+    width: 60% !important;
+  }
+}

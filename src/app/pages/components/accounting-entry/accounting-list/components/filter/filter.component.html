@@ -1,0 +1,122 @@
+<button
+type="button"
+class="btn btn-info me-1"
+(click)="openEnd()"
+>
+<i class="bi bi-funnel align-baseline me-1"></i> Filtros
+</button>
+<div class="custom-offcanvas" id="projectsFilters">
+  <div class="offcanvas-header border-bottom p-3">
+    <h5 class="offcanvas-title" id="projectsFiltersLabel">Filtros de asientos</h5>
+    <button type="button" class="btn-close" (click)="closeoffcanvas()"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form action="#!" [formGroup]="formgroup">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline"
+              >Año</label
+            >
+            <div class="vstack gap-2">
+              <ng-select [notFoundText]="'No se encontraron datos'" sm  class="auto-grow" formControlName="year" placeholder="Seleecione un año" (change)="getMonths($event)" [clearable]="false">
+                <ng-option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline"
+              >Mes</label
+            >
+            <div class="vstack gap-2">
+              <ng-select [notFoundText]="'No se encontraron datos'" sm [clearable]="false" class="auto-grow" formControlName="month" placeholder="Selecione un mes">
+                <ng-option *ngFor="let month of months" [value]="month.id">
+                  {{ month.name }}
+                </ng-option>
+              </ng-select >
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline"
+              >Proyecto</label
+            >
+            <div class="vstack gap-2">
+              <input type="text" placeholder="Escriba el nombre del proyecto" class="form-control" name="" id="" formControlName="project">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline"
+              >Estado</label
+            >
+            <div class="vstack gap-2">
+              <ng-select  sm placeholder="Seleccione un estado" class="auto-grow" [clearable]="true" [notFoundText]="'No se encontraron datos'" formControlName="state">
+                @for (item of states; track $index) {
+                  <ng-option [value]="item.id">{{item.name}}</ng-option>
+                }
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline"
+              >Usuario</label
+            >
+            <div class="vstack gap-2">
+              <input type="text" placeholder="Escriba un usuario" class="form-control" name="" id="" formControlName="username">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline"
+              >Asiento</label
+            >
+            <div class="vstack gap-2">
+              <input placeholder="Escriba un asiento" type="text" class="form-control" name="" id="" formControlName="seat">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="mb-3">
+            <label
+              class="select-category-filter form-label fs-md mb-3 text-decoration-underline"
+              >Ult. dígito</label
+            >
+            <div class="vstack gap-2">
+              <ng-select  sm placeholder="Seleccione una opción" class="auto-grow" [items]="digitSeat" bindLabel="name" bindValue="value" [clearable]="true" [notFoundText]="'No se encontraron datos'" formControlName="lastDigitSeat">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="offcanvas-header htsack gap-2 border-top p-3">
+    <button class="btn btn-subtle-danger w-100" (click)="resetForm()">
+      <i class="bi bi-x-lg align-baseline me-1"></i> Reset
+    </button>
+    <button class="btn btn-secondary w-100" (click)="filter()">
+      <i class="bi bi-funnel align-baseline me-1"></i> Filters
+    </button>
+  </div>
+</div>
+<div
+  class="offcanvas-backdrop fade backdropProject"
+  id="backdrop"
+  (click)="closeoffcanvas()"
+></div>
