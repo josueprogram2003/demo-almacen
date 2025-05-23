@@ -1,4 +1,19 @@
-h5{
-    font-weight: 400;
-    font-size: 1.25rem;
-}
+ .nav-horizontal {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;           /* Hace la lista horizontal */
+    background-color: #333;  /* Fondo oscuro */
+  }
+  .nav-horizontal li {
+    margin: 0;
+  }
+  .nav-horizontal li a {
+    display: block;
+    padding: 14px 20px;
+    color: white;
+    text-decoration: none;
+  }
+  .nav-horizontal li a:hover {
+    background-color: #555;
+  }
